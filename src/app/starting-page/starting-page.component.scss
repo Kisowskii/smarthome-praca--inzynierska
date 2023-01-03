@@ -1,0 +1,48 @@
+
+.starting-page-container{
+        margin-top: calc(147px);
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        justify-content: center;
+    .button-logo{
+        display: flex;
+        background-color: #0061A3;
+        align-self: center;
+        justify-content: center;
+        width: 132px;
+        height: 132px;
+        border-radius: 50%;
+       svg{
+        align-self: center;
+       }
+    }
+    h1{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+    h3{
+        display: flex;
+        justify-content: center;
+        color: #0061A3;
+    }
+    .loader {
+        display: flex;
+        align-self: center;
+        margin-top: 30px;
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #0061A3; /* Blue */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+}
+
+

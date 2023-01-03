@@ -1,0 +1,47 @@
+.main-menu-container{
+    @media(max-width:1000px){
+        margin: 32px 16px;
+    }
+    margin: 0 16px 16px;
+    padding-bottom: 32px;
+}
+.table-container{
+    margin-top: 16px;
+}
+.active-panel {
+    border: white;
+    color: white;
+    background-color: #0061A3;
+}
+.main-menu-single-panel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 99%;
+    height: 72px;
+    border:solid 2px #0061A3;
+    border-radius: 8px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+    color: #0061A3;
+    background-color: white;
+    :focus{
+        background-color: #0061A3;
+        color: #FFFFFF
+    }
+
+    img{
+        margin: 16px;
+        filter: invert(17%) sepia(92%) saturate(4601%) hue-rotate(192deg) brightness(88%) contrast(101%);
+    }
+    &:focus,:hover{
+        background-color: #0061A3;
+        color: white;
+        img{
+            filter: invert(100%) sepia(17%) saturate(7477%) hue-rotate(179deg) brightness(116%) contrast(93%);
+        }
+    }
+}

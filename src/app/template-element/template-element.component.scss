@@ -1,0 +1,80 @@
+.template-container{
+    .top-panel{
+        padding: 24px;
+        background-color: #0061A3;
+        font-family: 'Roboto';
+        font-style: normal;
+        color: #FFFFFF;
+        .first-row{
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px;
+            .arrow-button{
+                background-color: #0061A3;
+                border: 0;
+                padding: 0  ;
+                img{
+                    filter: invert(100%) sepia(17%) saturate(7477%) hue-rotate(179deg) brightness(116%) contrast(93%);
+                }
+            }
+        }
+        .second-row{
+            display: flex;
+            align-items: center;
+            margin-top: 24px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 19px;
+            mat-slide-toggle{
+                margin-right: 8px;
+            }
+        }
+        img{
+            margin-right: 50px;
+            width: 24px;
+            height: 24px;
+        }
+    }
+    
+    .content-panel{
+        margin: 24px 16px;
+        .information-panel{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Roboto';
+            font-style: normal;
+            .title-container{
+                font-weight: 500;
+                font-size: 24px;
+                line-height: 26px;
+            }
+            .value-container{
+                font-weight: 500;
+                font-size: 24px;
+                line-height: 27px;
+               
+            }
+            .icon-container{
+                display: flex;
+                width: 48px;
+                height: 48px;
+                background-color: #e5eff5;
+                border-radius: 50%; 
+                align-items: center;
+                justify-content: center;
+
+                img{
+                    width: 24px;
+                    height: 24px;
+
+                    filter: invert(17%) sepia(92%) saturate(4601%) hue-rotate(192deg) brightness(88%) contrast(101%);
+                }
+            }
+          
+        }
+        
+    }
+}
