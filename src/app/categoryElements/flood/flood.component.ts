@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   template: `
   <app-template-element title="Wykrycie zalania" [type]="'Zalanie'" [showOptionAutomaticElement]="false"></app-template-element>
   `,
-  styleUrls: ['./flood.component.scss']
 })
 export class FloodComponent {
 }

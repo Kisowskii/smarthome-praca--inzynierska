@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   template: `
   <app-template-element title="Oświetlenie"  [type]="'Oswietlenie'" [showOptionAutomaticElement]="true"></app-template-element>
   `,
-  styleUrls: ['./light.component.scss']
 })
 export class LightComponent {
   

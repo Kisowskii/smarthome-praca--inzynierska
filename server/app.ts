@@ -86,13 +86,6 @@ app.post("/api/elements", (req, res, next) => {
     const elements = [{
         buttonText:"Lampa",
         elementType:"Oswietlenie",
-        elementPosition:"Salon",
-        icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true
-    },{
-        buttonText:"Lampa",
-        elementType:"Oswietlenie",
         elementPosition:"Kuchnia",
         icon:"../../assets/Oswietlenie.svg",
         value:true,
@@ -112,37 +105,16 @@ app.post("/api/elements", (req, res, next) => {
         value:true,
         automation:true
     },{
-        buttonText:"Lampa",
-        elementType:"Oswietlenie",
-        elementPosition:"Na zewnątrz",
-        icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true
-    },{
         buttonText:"Temperatura",
         elementType:"Temperatura",
-        elementPosition:"Kuchnia",
-        icon:"../../assets/Temperatura.svg",
-        value:21,
-        automation:false
-    },{
-        buttonText:"Temperatura",
-        elementType:"Temperatura",
-        elementPosition:"Na zewnątrz",
+        elementPosition:"Łazienka",
         icon:"../../assets/Temperatura.svg",
         value:21,
         automation:false
     },{
         buttonText:"Wilgotność",
         elementType:"Wilgotność",
-        elementPosition:"Kuchnia",
-        icon:"../../assets/Wilgotnosc.svg",
-        value:21,
-        automation:false
-    },{
-        buttonText:"Wilgotność",
-        elementType:"Wilgotność",
-        elementPosition:"Na zewnątrz",
+        elementPosition:"Łazienka",
         icon:"../../assets/Wilgotnosc.svg",
         value:21,
         automation:false

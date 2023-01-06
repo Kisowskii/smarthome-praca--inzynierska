@@ -9,7 +9,6 @@ import { CategoryElementsService } from '../category-elements.service';
   template: `
   <app-template-element title="Klimatyzacja" [type]="'Klimatyzacja'"  [showOptionAutomaticElement]="true"></app-template-element>
   `,
-  styleUrls: ['./air-conditioning.component.scss']
 })
 export class AirConditioningComponent {
 

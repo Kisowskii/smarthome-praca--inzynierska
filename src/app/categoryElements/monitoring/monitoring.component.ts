@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   template: `
   <app-template-element title="Monitoring" [type]="'Monitoring'" [showOptionAutomaticElement]="true"></app-template-element>
   `,
-  styleUrls: ['./monitoring.component.scss']
 })
 export class MonitoringComponent {
   
