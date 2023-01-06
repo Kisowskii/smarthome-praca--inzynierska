@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   template: `
   <app-template-element title="Stopień wilgotności w %" [type]="'Wilgotność'" [showOptionAutomaticElement]="false"></app-template-element>
   `,
-  styleUrls: ['./humidity.component.scss']
 })
 export class HumidityComponent{
   
