@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { CategoryElementsService } from '../categoryElements/category-elements.service';
 @Component({
   selector: 'app-main-menu-page',
   template: `
   <div class="main-menu-container">
-   
     <div class="main-menu-header">
       <h2>Twoje elementy</h2>
-      
     </div>
     <mat-slide-toggle
           color="primary"
@@ -26,35 +22,14 @@ import { CategoryElementsService } from '../categoryElements/category-elements.s
   `,
   styleUrls: ['./main-menu-page.component.scss']
 })
-export class MainMenuPageComponent implements OnInit {
+export class MainMenuPageComponent {
 
-  constructor( public elementService: CategoryElementsService) {}
   checked
   typeOfSwitherInformations:string ='Wyświetl element według rozmieszczenia'
-  elements: MainMenuCategoryDtos[] = []
-  elementSub:Subscription
-  element;
   menuType:string = ''
-
-  ngOnInit() {
-    this.element = this.elementService.getAllElements();
-    this.elementSub = this.elementService
-      .getElementUpdateListener()
-      .subscribe((elements: MainMenuCategoryDtos[]) => {
-        this.elements = elements
-      });
-  }
-  ngOnDestroy() {
-    if(this.elements.length === 0){
-      this.elementService.addElementBase()
-    }
-    this.elementSub.unsubscribe();
-  }
 
   onChangeDisplayInformations(){
     this.menuType = 'menu/Types'
-    
-    
     this.checked=!this.checked
     if (this.checked){
       this.typeOfSwitherInformations="Wyświetl element według przeznaczenia"
@@ -64,7 +39,6 @@ export class MainMenuPageComponent implements OnInit {
     }
   }
 
-  
   
 
   typeCategories:MainMenuCategoryDtos[] = [

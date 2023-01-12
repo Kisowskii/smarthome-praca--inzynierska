@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
+
 
 @Component({
   selector: 'app-monitoring',
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
   <app-template-element title="Monitoring" [type]="'Monitoring'" [showOptionAutomaticElement]="true"></app-template-element>
   `,
 })
-export class MonitoringComponent {
+export class MonitoringComponent{
   
+
 }

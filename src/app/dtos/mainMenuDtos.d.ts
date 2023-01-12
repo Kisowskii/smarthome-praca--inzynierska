@@ -6,5 +6,7 @@ interface MainMenuCategoryDtos{
     icon:string;
     value?:string | boolean;
     automation?:boolean;
+    gpio?:number;
+    display?:boolean;
 }
 

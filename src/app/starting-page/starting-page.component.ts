@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CategoryElementsService } from '../categoryElements/category-elements.service';
 
 @Component({
   selector: 'app-starting-page',
@@ -18,12 +20,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./starting-page.component.scss']
 })
 export class StartingPageComponent  {
-  constructor(private router: Router) {}
+  constructor( public elementService: CategoryElementsService, private router: Router) {}
 
-
+  elements: MainMenuCategoryDtos[] = []
+  elementSub:Subscription
+  element;
   ngOnInit() {
-    setTimeout(() => {
+    this.element = this.elementService.getAllElements();
+    this.elementSub = this.elementService
+      .getElementUpdateListener()
+      .subscribe((elements: MainMenuCategoryDtos[]) => {
+        this.elements = elements
+      });
+      setTimeout(() => {
         this.router.navigateByUrl("menu");
     }, 5000);  //5s
-}
+  }
+  ngOnDestroy() {
+    if(this.elements.length === 0){
+      this.elementService.addElementBase()
+    }
+    this.elementSub.unsubscribe();
+  }
+ 
 }

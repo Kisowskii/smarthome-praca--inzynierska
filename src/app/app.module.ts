@@ -27,6 +27,7 @@ import { LivingRoomComponent } from './categoryElements/living-room/living-room.
 import { OutsideComponent } from './categoryElements/outside/outside.component';
 import { BedroomComponent } from './categoryElements/bedroom/bedroom.component';
 import { HttpClientModule } from '@angular/common/http';
+import {WebcamModule} from 'ngx-webcam';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +49,7 @@ import { HttpClientModule } from '@angular/common/http';
     BedroomComponent
   ],
   imports: [
+    WebcamModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,

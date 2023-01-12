@@ -25,6 +25,8 @@
     "concurrently": "^7.6.0",
     "missing": "0.0.1",
     "mongodb": "^4.2.23",
+    "ngx-webcam": "^0.4.1",
+    "onoff": "^6.0.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
