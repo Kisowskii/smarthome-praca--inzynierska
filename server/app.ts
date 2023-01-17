@@ -8,6 +8,7 @@ const Gpio = require('onoff').Gpio;
 const LedKuchnia = new Gpio(17, 'out')
 const LedSypialnia = new Gpio(27, 'out')
 const LedLazienka = new Gpio(22, 'out')
+const Klimatyzacja = new Gpio(12, 'out')
 const CzujnikKuchnia = new Gpio(5, 'in', 'both')
 const CzujnikSypialnia= new Gpio(6, 'in', 'both')
 const CzujnikLazienka = new Gpio(19, 'in', 'both')
@@ -16,7 +17,7 @@ const CzujnikZalania = new Gpio(20, 'in', 'both')
 const CzujnikDymu = new Gpio(26, 'in', 'both')
 const CzujnikRuchu = new Gpio(25, 'in', 'both')
 const sensor = require('node-dht-sensor');
-
+const spawn = require("child_process").spawn;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -32,14 +33,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-
-
-
-
-
-
-const spawn = require("child_process").spawn;
-
 
 
 
@@ -158,6 +151,10 @@ app.get("/api/elements", async (req, res, next) => {
         if(element.value === true){
           LedLazienka.writeSync(1)
         }else LedLazienka.writeSync(0)
+      }else if (element.gpio === 12){
+        if(element.value === true){
+          Klimatyzacja.writeSync(1)
+        }else Klimatyzacja.writeSync(0)
       }
       
     })
@@ -227,11 +224,15 @@ app.put("/api/elements/:id", (req, res, next) => {
             if(elem.value === true){
               LedLazienka.writeSync(1)
             }else LedLazienka.writeSync(0)
-          } else if(elem.gpio === 24){
+          } else if (elem.gpio === 12){
+            if(elem.value === true){
+          Klimatyzacja.writeSync(1)
+            }else Klimatyzacja.writeSync(0)
+          }else if(elem.gpio === 24){
            if(elem.value === true){
-             spawn('python',["server/stepperEngine.py", "true"]);
+             spawn('python',["stepperEngine.py", true]);
            }else {
-             spawn('python',["server/stepperEngine.py", "false"]);
+             spawn('python',["stepperEngine.py", false]);
          }}
           })
         
@@ -245,8 +246,8 @@ app.put("/api/elements/:id", (req, res, next) => {
         elementType:"Oswietlenie",
         elementPosition:"Kuchnia",
         icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true,
+        value:false,
+        automation:false,
         gpio:17,
         display:true
     },{
@@ -254,8 +255,8 @@ app.put("/api/elements/:id", (req, res, next) => {
         elementType:"Oswietlenie",
         elementPosition:"Sypialnia",
         icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true,
+        value:false,
+        automation:false,
         gpio:27,
         display:true
     },{
@@ -263,37 +264,10 @@ app.put("/api/elements/:id", (req, res, next) => {
         elementType:"Oswietlenie",
         elementPosition:"Łazienka",
         icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true,
+        value:false,
+        automation:false,
         gpio:22,
         display:true
-    },{
-        buttonText:"Czujnik światła",
-        elementType:"Oswietlenie",
-        elementPosition:"Kuchnia",
-        icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true,
-        gpio:5,
-        display:false
-    },{
-        buttonText:"Czujnik światła",
-        elementType:"Oswietlenie",
-        elementPosition:"Sypialnia",
-        icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true,
-        gpio:6,
-        display:false
-    },{
-        buttonText:"Czujnik światła",
-        elementType:"Oswietlenie",
-        elementPosition:"Łazienka",
-        icon:"../../assets/Oswietlenie.svg",
-        value:true,
-        automation:true,
-        gpio:19,
-        display:false
     },{
         buttonText:"Temperatura",
         elementType:"Temperatura",
@@ -326,15 +300,15 @@ app.put("/api/elements/:id", (req, res, next) => {
         elementType:"Monitoring",
         elementPosition:"Na zewnątrz",
         icon:"../../assets/Monitoring.svg",
-        value:true,
-        automation:true,
+        value:false,
+        automation:false,
         display:true
     },{
         buttonText:"Rolety",
         elementType:"Rolety",
         elementPosition:"Kuchnia",
         icon:"../../assets/Rolety.svg",
-        value:true,
+        value:false,
         gpio:24,
         automation:true,
         display:true
@@ -352,8 +326,9 @@ app.put("/api/elements/:id", (req, res, next) => {
         elementType:"Klimatyzacja",
         elementPosition:"Salon",
         icon:"../../assets/Czujnik_Zalania.svg",
-        value:true,
-        automation:true,
+        value:false,
+        gpio:12,
+        automation:false,
         display:true
     },{
         buttonText:req.body.buttonText,

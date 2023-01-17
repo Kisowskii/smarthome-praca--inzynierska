@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-main-menu-page',
   template: `
-  <div class="main-menu-container">
+ <div class="main-menu-container">
     <div class="main-menu-header">
       <h2>Twoje elementy</h2>
     </div>
@@ -13,10 +13,10 @@ import { Component, OnInit } from '@angular/core';
         {{typeOfSwitherInformations}}
       </mat-slide-toggle>
     <div class="table-container"  *ngFor="let category of typeCategories">
-      <button class="main-menu-single-panel" role="button" *ngIf="!checked" [routerLink]="category.elementType"><img [src]="category.icon" alt="Ikona + {{category.buttonText}}">{{category.buttonText}} <img class='arrow'  src="../../assets/Strzalka.svg"></button>
+      <button [attr.aria-label]="category.elementType" class="main-menu-single-panel" role="button" *ngIf="!checked" [routerLink]="category.elementType"><img [src]="category.icon" alt="Ikona + {{category.buttonText}}">{{category.buttonText}} <img class='arrow'  src="../../assets/Strzalka.svg"></button>
     </div>
     <div class="table-container"  *ngFor="let category of positionCategories">
-      <button class="main-menu-single-panel" role="button" *ngIf="checked" [routerLink]="category.elementPosition"><img [src]="category.icon" alt="Ikona + {{category.buttonText}}">{{category.buttonText}} <img class='arrow'  src="../../assets/Strzalka.svg"></button>
+      <button [attr.aria-label]="category.elementPosition" class="main-menu-single-panel" role="button" *ngIf="checked" [routerLink]="category.elementPosition"><img [src]="category.icon" alt="Ikona + {{category.buttonText}}">{{category.buttonText}} <img class='arrow'  src="../../assets/Strzalka.svg"></button>
     </div>
   </div>
   `,

@@ -8,13 +8,14 @@ import { CategoryElementsService } from '../categoryElements/category-elements.s
   <div class="template-container">
     <div class="top-panel">
       <div class="first-row">
-         <button class="arrow-button" role="button" routerLink=".."><img class='arrow'  src="../../assets/Strzalka-wstecz.svg"> </button>
+         <button aria-label="Strzałka wstecz" class="arrow-button" role="button" routerLink=".."><img class='arrow'  src="../../assets/Strzalka-wstecz.svg"> </button>
          <div class="title">{{title}}</div>
       </div>
-      <div class="second-row" *ngIf="showOptionAutomaticElement">
+      <div class="second-row" *ngIf="showOptionAutomaticElement" [ariaLabel]="">
         <mat-slide-toggle color="primary"  
         [checked]="automationChecked"
-        (change)="onChangeSwitcherInformations()"> 
+        (change)="onChangeSwitcherInformations()"
+        [aria-label]="typeOfSwitherInformations"> 
         </mat-slide-toggle>{{typeOfSwitherInformations}}
       </div>
     </div>
@@ -26,7 +27,7 @@ import { CategoryElementsService } from '../categoryElements/category-elements.s
         <div class='monitoring' role="button" *ngIf="title=='Monitoring'"><button mat-raised-button color="primary">Podgląd</button></div>
         <div class="value-container" *ngIf="onCheckValueIsStringOrNumer(element.value)">{{element.value}}</div>
         <div class="value-container" *ngIf="onCheckValueIsBoolean(element.value)">
-        <mat-slide-toggle (click)="onUpdateElement(element)" color="primary" [checked]="element.value"  [disabled]="automationChecked" >
+        <mat-slide-toggle [aria-label]="element.elementType + element.elementPosition" (click)="onUpdateElement(element)" color="primary" [checked]="element.value"  [disabled]="automationChecked" >
       </mat-slide-toggle>
         </div>
       </div>

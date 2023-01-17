@@ -7,7 +7,7 @@ import { CategoryElementsService } from '../category-elements.service';
 @Component({
   selector: 'app-air-conditioning',
   template: `
-  <app-template-element title="Klimatyzacja" [type]="'Klimatyzacja'"  [showOptionAutomaticElement]="true"></app-template-element>
+  <app-template-element title="Klimatyzacja" [type]="'Klimatyzacja'"  [showOptionAutomaticElement]="false"></app-template-element>
   `,
 })
 export class AirConditioningComponent {
