@@ -59,4 +59,4 @@ jobs:
           app-name: 'KisowskiiSmarthome'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_05515830D2C74E969FED4E660A561EF5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BD3596827E4F4410B886C64FFFDD27DD }}
