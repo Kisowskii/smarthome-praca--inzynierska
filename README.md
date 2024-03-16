@@ -1,27 +1,39 @@
-# Smarthome
+# Projekt miniSmartHome
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
+> Aplikacja webowa wykorzystująca Angulara i Express.js sterująca elementami eletronicznymi za pomocą raspberry pi
 
-## Development server
+## Informacje ogólne
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Projekt domyślnie służy do sterowania elementami elektronicznymi wykorzystując raspberry pi
+- Aplikacja służyła do prezentacji działania makiety mieszkania ze zdalnym sterowaniem elementami takimi jak: światło, silnik krokowy sterujący roletą, odczyt parametrów z czujników itd.
+- Jest to aplikacja treningowa, nie mająca zasotowania przemysłowego ale będzie rozwijana w przyszłości o elementy ML.
 
-## Code scaffolding
+## Używane technologie
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Angular 15.0
+- Typescript 4.9
+- MongoDB 4.2
+- Express.js 4.18
+- pigpio 3.3.1 4.8
+- python
 
-## Build
+## Screenshots
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+![Example screenshot](./img/MainPage.png)
+![Example screenshot](./img/Light.png)
+![Example screenshot](./img/Bathroom.png)
+![Example screenshot](./img/Photo.png)
 
-## Running unit tests
+## Setup
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+W celu uruchomienia projektu należy odpalić na systemie linuxowym (najlepiej bezpośrednio na Raspianie korzystając z Raspberry pi) npm install w folderze głównych oraz folderze server aby zaktualizowały się node.modules
 
-## Running end-to-end tests
+## W przyszłości
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+To do:
 
-## Further help
+- Dodanie systemu wykrywania twarzy
+- Autentykacja i autoryzacja
+- Nauka zwyczajów użytkowników aby AI mogło dostosowywać układ elementów do zachowań użytkowników
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Created by [@Kisowskii]
