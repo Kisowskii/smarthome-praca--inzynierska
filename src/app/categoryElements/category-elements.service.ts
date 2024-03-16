@@ -10,9 +10,10 @@ export class CategoryElementsService {
   private elementsUpdated = new Subject<MainMenuCategoryDtos[]>();
 
   constructor(private http: HttpClient) {}
+  private baseUrl = 'http://192.168.137.108:3000/api';
 
     getToken(username: string, password: string) {
-      this.http.post<{token: string}>('http://localhost:3000/api/login', { username, password })
+      this.http.post<{token: string}>(`${this.baseUrl}/login`, { username, password })
       .subscribe(response => {
         localStorage.setItem('token', response.token); // Zapisz token pod kluczem 'token'
       }, error => {
@@ -27,19 +28,11 @@ getTokenFromStorage(): string | null {
   else return 'TwojSekretnyTokenTutaj';
 };
 
-   private getAuthHeaders() {
-    const utoken = localStorage.getItem('userToken'); // Pobierz token z localStorage
-        const token = localStorage.getItem('userToken'); // Pobierz token z localStorage
-
-    console.log(token);
-        console.log(utoken);
-    return new HttpHeaders().set('Authorization', token ? token : '');
-  }
-
+ 
   getAllElements() {
     this.http
       .get<{ message: string; elem: MainMenuCategoryDtos[] }>(
-        'http://localhost:3000/api/elements' , { headers: this.getAuthHeaders()}
+        `${this.baseUrl}/elements` 
       )
       .pipe(
         map((elementsData) => {
@@ -65,7 +58,7 @@ getTokenFromStorage(): string | null {
   getElementsByType(type:string) {
     this.http
       .get<{ message: string; elem: MainMenuCategoryDtos[] }>(
-        'http://localhost:3000/api/elements/elementsType/' + type , { headers: this.getAuthHeaders()}
+        `${this.baseUrl}/elements/elementsType/` + type , 
       )
       .pipe(
         map((elementsData) => {
@@ -91,7 +84,7 @@ getTokenFromStorage(): string | null {
   getElementsByPosition(position:string) {
     this.http
       .get<{ message: string; elem: MainMenuCategoryDtos[] }>(
-        'http://localhost:3000/api/elements/elementsPosition/' + position , { headers: this.getAuthHeaders()}
+        `${this.baseUrl}/elements/elementsPosition/` + position 
       )
       .pipe(
         map((elementsData) => {
@@ -129,7 +122,7 @@ getTokenFromStorage(): string | null {
     automation:false
     }
     this.http
-      .post<{ message: string }>('http://localhost:3000/api/elements', element)
+      .post<{ message: string }>(`${this.baseUrl}/elements`, element)
       .subscribe(() => {
         this.elements.push(element);
         this.elementsUpdated.next([...this.elements]);
@@ -155,7 +148,7 @@ getTokenFromStorage(): string | null {
     automation:automation,
     };
     this.http
-      .put('http://localhost:3000/api/elements/' + _id, element)
+      .put(`${this.baseUrl}/elements/` + _id, element)
       .subscribe(() => {
         const updatedElement = [...this.elements];
         const oldElementIndex = updatedElement.findIndex(
