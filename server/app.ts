@@ -10,6 +10,7 @@ const LedSypialnia = new Gpio(27, 'out')
 const LedLazienka = new Gpio(22, 'out')
 const Klimatyzacja = new Gpio(12, 'out')
 const CzujnikKuchnia = new Gpio(5, 'in', 'both')
+const CzujnikSilnik = new Gpio(16, 'in', 'both')
 const CzujnikSypialnia= new Gpio(6, 'in', 'both')
 const CzujnikLazienka = new Gpio(19, 'in', 'both')
 const CzujnikTemperatury = new Gpio(21, 'in', 'both')
@@ -34,7 +35,27 @@ app.use((req, res, next) => {
   next();
 });
 
+ CzujnikSilnik.watch((err, value)=>{
+  if (err) { //if an error
+    console.error('There was an error', err); //output error message to console
+  return;
+  }
+  
+  elem.findOne({ gpio:24 }).then((element) => {
+    if (element && element.automation) {
+      console.log(element.automation)
 
+
+        if(value===1){
+          console.log("prawo");
+    spawn('python',["server/stepperEngine.py", true]);}
+  else{
+     console.log("lewo");
+    spawn('python',["server/stepperEngine.py", false]);}
+    } 
+  });
+
+});
 
   CzujnikKuchnia.watch((err, value)=>{
   if (err) { //if an error
@@ -196,7 +217,8 @@ app.get("/api/elements", async (req, res, next) => {
   });
 
 app.put("/api/elements/:id", (req, res, next) => {
-  
+  let previousValue;
+  elem.findOne({ _id: ObjectId(req.params.id)}).then((elem)=>{previousValue = elem.value})
     elem.updateOne(
         { _id: ObjectId(req.params.id) },
         {
@@ -229,10 +251,10 @@ app.put("/api/elements/:id", (req, res, next) => {
           Klimatyzacja.writeSync(1)
             }else Klimatyzacja.writeSync(0)
           }else if(elem.gpio === 24){
-           if(elem.value === true){
-             spawn('python',["stepperEngine.py", true]);
-           }else {
-             spawn('python',["stepperEngine.py", false]);
+           if(elem.value === true && elem.value !== previousValue){
+             spawn('python',["server/stepperEngine.py", true]);
+           }else if(elem.value === false && elem.value !== previousValue) {
+             spawn('python',["server/stepperEngine.py", false]);
          }}
           })
         
