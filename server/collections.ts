@@ -1,4 +1,4 @@
-const datab = require("./connect");
+const datab = require("./connect.ts");
 
 const elements = datab.collection("Elements");
 

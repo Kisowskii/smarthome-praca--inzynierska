@@ -20,6 +20,13 @@ export class CategoryElementsService {
     });
 }
 
+getTokenFromStorage(): string | null {
+  const token = localStorage.getItem('token');
+  if (token) return token;
+  
+  else return 'TwojSekretnyTokenTutaj';
+};
+
    private getAuthHeaders() {
     const utoken = localStorage.getItem('userToken'); // Pobierz token z localStorage
         const token = localStorage.getItem('userToken'); // Pobierz token z localStorage

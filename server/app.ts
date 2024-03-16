@@ -1,6 +1,6 @@
 const express = require("express");
-const db = require("./connect");
-const elem = require("./collections");
+const db = require("./connect.ts");
+const elem = require("./collections.ts");
 const { ObjectId } = require("mongodb");
 const bodyParser = require("body-parser");
 const app = express();
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1]; // Format 'Bearer TOKEN'
   console.log(token);
   console.log(authHeader);
-  if (token && token === process.env['SECRET_TOKEN']) {
+  if (token && token === process.env.SECRET_TOKEN) {
     next();
   } else {
     res.status(403).json({ message: authHeader });
@@ -414,6 +414,5 @@ app.put("/api/elements/:id", (req, res, next) => {
   app.get('/', (req, res) => {
     res.send({hello: 'world'});
 });
-  
     module.exports = app;
 

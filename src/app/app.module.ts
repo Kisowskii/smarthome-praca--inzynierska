@@ -26,8 +26,9 @@ import { BathroomComponent } from './categoryElements/bathroom/bathroom.componen
 import { LivingRoomComponent } from './categoryElements/living-room/living-room.component';
 import { OutsideComponent } from './categoryElements/outside/outside.component';
 import { BedroomComponent } from './categoryElements/bedroom/bedroom.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {WebcamModule} from 'ngx-webcam';
+import { AuthInterceptor } from './login.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +59,9 @@ import {WebcamModule} from 'ngx-webcam';
     BrowserAnimationsModule,
   ],
   
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
