@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
@@ -11,10 +11,28 @@ export class CategoryElementsService {
 
   constructor(private http: HttpClient) {}
 
+    getToken(username: string, password: string) {
+      this.http.post<{token: string}>('http://localhost:3000/api/login', { username, password })
+      .subscribe(response => {
+        localStorage.setItem('token', response.token); // Zapisz token pod kluczem 'token'
+      }, error => {
+      console.error('Błąd logowania:', error);
+    });
+}
+
+   private getAuthHeaders() {
+    const utoken = localStorage.getItem('userToken'); // Pobierz token z localStorage
+        const token = localStorage.getItem('userToken'); // Pobierz token z localStorage
+
+    console.log(token);
+        console.log(utoken);
+    return new HttpHeaders().set('Authorization', token ? token : '');
+  }
+
   getAllElements() {
     this.http
       .get<{ message: string; elem: MainMenuCategoryDtos[] }>(
-        'http://localhost:3000/api/elements'
+        'http://localhost:3000/api/elements' , { headers: this.getAuthHeaders()}
       )
       .pipe(
         map((elementsData) => {
@@ -40,7 +58,7 @@ export class CategoryElementsService {
   getElementsByType(type:string) {
     this.http
       .get<{ message: string; elem: MainMenuCategoryDtos[] }>(
-        'http://localhost:3000/api/elements/elementsType/' + type
+        'http://localhost:3000/api/elements/elementsType/' + type , { headers: this.getAuthHeaders()}
       )
       .pipe(
         map((elementsData) => {
@@ -66,7 +84,7 @@ export class CategoryElementsService {
   getElementsByPosition(position:string) {
     this.http
       .get<{ message: string; elem: MainMenuCategoryDtos[] }>(
-        'http://localhost:3000/api/elements/elementsPosition/' + position
+        'http://localhost:3000/api/elements/elementsPosition/' + position , { headers: this.getAuthHeaders()}
       )
       .pipe(
         map((elementsData) => {

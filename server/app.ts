@@ -19,6 +19,11 @@ const CzujnikDymu = new Gpio(26, 'in', 'both')
 const CzujnikRuchu = new Gpio(25, 'in', 'both')
 const sensor = require('node-dht-sensor');
 const spawn = require("child_process").spawn;
+const cors = require('cors');
+require('dotenv').config();
+// Reszta Twojego kodu serwera
+
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -34,6 +39,40 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use((req, res, next) => {
+  // Ekstrakcja tokena z nagłówka 'Authorization'
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1]; // Format 'Bearer TOKEN'
+  console.log(token);
+  console.log(authHeader);
+  if (token && token === process.env['SECRET_TOKEN']) {
+    next();
+  } else {
+    res.status(403).json({ message: authHeader });
+    return res.status(403).json({ message: token });
+  }
+});
+
+
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  console.log(req.body);
+  const users = {
+    login: 'login', // To jest klucz, a jego wartość to 'login'
+    password: 'password' // To jest klucz, a jego wartość to 'password'
+  };
+
+  // Poprawne używanie kluczy obiektu
+  if (users.password === password && users.login === username) {
+    // Jeśli dane logowania są poprawne, zwróć token
+    res.json({ token: process.env['SECRET_TOKEN'] });
+  } else {
+    // W przeciwnym razie zwróć błąd autentykacji
+    res.status(401).json({ message: 'Niepoprawne dane logowania' });
+  }
+});
+
 
  CzujnikSilnik.watch((err, value)=>{
   if (err) { //if an error

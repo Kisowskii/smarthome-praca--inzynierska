@@ -26,6 +26,7 @@ export class StartingPageComponent  {
   elementSub:Subscription
   element;
   ngOnInit() {
+    this.elementService.getToken('login', 'password');
     this.element = this.elementService.getAllElements();
     this.elementSub = this.elementService
       .getElementUpdateListener()

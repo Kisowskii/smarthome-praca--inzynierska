@@ -18,37 +18,37 @@ const normalizePort = (val) => {
   return false;
 };
 
-// const onError = (error) => {
-//   if (error.syscall !== "listen") {
-//     throw error;
-//   }
-//   const bind = typeof port === "string" ? "pipe " + port : "port " + port;
-//   switch (error.code) {
-//     case "EACCES":
-//       console.error(bind + " wymaga zwiększonych uprawnień");
-//       process.exit(1);
-//       break;
-//     case "EADDRINUSE":
-//       console.error(bind + " aktualnie w użyciu");
-//       process.exit(1);
-//       break;
-//     default:
-//       throw error;
-//   }
-// };
+const onError = (error) => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " wymaga zwiększonych uprawnień");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " aktualnie w użyciu");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
 
-// const onListening = () => {
-//   const addr = server.address();
-//   const bind = typeof port === "string" ? "pipe " + port : "port " + port;
-//   debug("Listening on " + bind);
-// };
+const onListening = () => {
+  const addr = server.address();
+  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
+  debug("Listening on " + bind);
+};
 
-// const port = normalizePort("4201");
-// app.set("port", port);
+const port = normalizePort("3000");
+apps.set("port", port);
 
 const server = http.createServer(apps);
-// server.on("error", onError);
-// server.on("listening", onListening);
+server.on("error", onError);
+server.on("listening", onListening);
 server.listen(3000, '127.0.0.1', function() {
-    console.log("Server now listening on 4201");
+    console.log("Server now listening on 3000");
 });
