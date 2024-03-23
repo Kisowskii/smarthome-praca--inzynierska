@@ -46,7 +46,7 @@ app.use((req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1]; // Format 'Bearer TOKEN'
   console.log(token);
   console.log(authHeader);
-  if (token && token === process.env.SECRET_TOKEN) {
+  if (token && token === process.env['SECRET_TOKEN']) {
     next();
   } else {
     res.status(403).json({ message: authHeader });
