@@ -231,29 +231,21 @@ app.get("/api/elements", async (req, res, next) => {
 
   app.get("/api/elements/elementsType/:type", async (req, res, next) => {
     elem.find({ elementType:req.params.type}).toArray().then(elements=>{
-  
-      
         res.status(200).json({
-          
           message: "Elements get succesfully",
           elem: elements,
         });
-     
     });
     })
 
   app.get("/api/elements/elementsPosition/:position", async (req, res, next) => {
-    elem.find({ elementPosition:req.params.position}).toArray((err, result) => {
-      if (err) {
-        throw new Error("No file");
-        console.log("error");
-      }
-      res.status(200).json({
-        message: "Elements get succesfully",
-        elem: result,
-      });
+      elem.find({ elementPosition:req.params.position}).toArray().then(elements=>{
+        res.status(200).json({
+          message: "Elements get succesfully",
+          elem: elements,
+        });
     });
-  });
+    })
 
 app.put("/api/elements/:id", (req, res, next) => {
   let previousValue;
