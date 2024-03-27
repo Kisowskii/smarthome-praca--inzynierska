@@ -14,6 +14,9 @@ import { CategoryElementsService } from '../categoryElements/category-elements.s
     </div>
     <h1>Smart Home</h1>
     <h3>Konrad Wisowski</h3>
+    </hr>
+    <h3>Projekt UI</h3>
+    <h3>Karolina Kowalczyk</h3>
     <div class="loader"></div>
   </div>
   `,
