@@ -10,7 +10,7 @@ export class CategoryElementsService {
   private elementsUpdated = new Subject<MainMenuCategoryDtos[]>();
 
   constructor(private http: HttpClient) {}
-  private baseUrl = 'https://api.apismarthome-wisowski-konrad.com:3000/api';
+  private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
 
     getToken(username: string, password: string) {
       this.http.post<{token: string}>(`${this.baseUrl}/login`, { username, password })
