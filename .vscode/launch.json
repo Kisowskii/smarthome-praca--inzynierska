@@ -10,8 +10,9 @@
       "name": "Launch Program",
       "program": "./server/server.ts",
       "preLaunchTask": "tsc: build - tsconfig.json",
-      "outFiles": ["./out/**/*.js"]
+      "outFiles": ["./dist/out-tsc/**/*.js"]
     }
+    
     ,
     
     {

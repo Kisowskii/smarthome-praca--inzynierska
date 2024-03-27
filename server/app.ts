@@ -4,19 +4,20 @@ const elem = require("./collections.ts");
 const { ObjectId } = require("mongodb");
 const bodyParser = require("body-parser");
 const app = express();
+const { version, Chip, Line } = require("node-libgpiod");
 const Gpio = require('onoff').Gpio;
-const LedKuchnia = new Gpio(17, 'out')
-const LedSypialnia = new Gpio(27, 'out')
-const LedLazienka = new Gpio(22, 'out')
-const Klimatyzacja = new Gpio(12, 'out')
-const CzujnikKuchnia = new Gpio(5, 'in', 'both')
-const CzujnikSilnik = new Gpio(16, 'in', 'both')
-const CzujnikSypialnia= new Gpio(6, 'in', 'both')
-const CzujnikLazienka = new Gpio(19, 'in', 'both')
-const CzujnikTemperatury = new Gpio(21, 'in', 'both')
-const CzujnikZalania = new Gpio(20, 'in', 'both')
-const CzujnikDymu = new Gpio(26, 'in', 'both')
-const CzujnikRuchu = new Gpio(25, 'in', 'both')
+const LedKuchnia = new Gpio(588, 'out')
+const LedSypialnia = new Gpio(598, 'out')
+const LedLazienka = new Gpio(593, 'out')
+const Klimatyzacja = new Gpio(583, 'out')
+const CzujnikKuchnia = new Gpio(576, 'in', 'both')
+const CzujnikSilnik = new Gpio(587, 'in', 'both')
+const CzujnikSypialnia= new Gpio(577, 'in', 'both')
+const CzujnikLazienka = new Gpio(590, 'in', 'both')
+const CzujnikTemperatury = new Gpio(592, 'in', 'both')
+const CzujnikZalania = new Gpio(591, 'in', 'both')
+const CzujnikDymu = new Gpio(597, 'in', 'both')
+const CzujnikRuchu = new Gpio(596, 'in', 'both')
 const sensor = require('node-dht-sensor');
 const spawn = require("child_process").spawn;
 const cors = require('cors');
@@ -24,6 +25,8 @@ require('dotenv').config();
 // Reszta Twojego kodu serwera
 
 app.use(cors());
+
+// Nast�pnie parsowanie cia�a ��dania
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -44,8 +47,6 @@ app.use((req, res, next) => {
   // Ekstrakcja tokena z nagłówka 'Authorization'
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1]; // Format 'Bearer TOKEN'
-  console.log(token);
-  console.log(authHeader);
   if (token && token === process.env['SECRET_TOKEN']) {
     next();
   } else {
@@ -184,7 +185,7 @@ elem.updateOne(
 })
   
 app.get("/api/elements", async (req, res, next) => {
-   sensor.read(11, 21, (err, temperature, humidity) => {
+   sensor.read(11, 592, (err, temperature, humidity) => {
     if(!err){
       elem.updateOne(
     { gpio:21, elementType:"Temperatura" },
@@ -229,18 +230,17 @@ app.get("/api/elements", async (req, res, next) => {
   
 
   app.get("/api/elements/elementsType/:type", async (req, res, next) => {
-    elem.find({ elementType:req.params.type}).toArray((err, result) => {
-      if (err) {
-        throw new Error("No file");
-        console.log("error");
-      }
-      res.status(200).json({
-        
-        message: "Elements get succesfully",
-        elem: result,
-      });
+    elem.find({ elementType:req.params.type}).toArray().then(elements=>{
+  
+      
+        res.status(200).json({
+          
+          message: "Elements get succesfully",
+          elem: elements,
+        });
+     
     });
-  });
+    })
 
   app.get("/api/elements/elementsPosition/:position", async (req, res, next) => {
     elem.find({ elementPosition:req.params.position}).toArray((err, result) => {
@@ -257,9 +257,9 @@ app.get("/api/elements", async (req, res, next) => {
 
 app.put("/api/elements/:id", (req, res, next) => {
   let previousValue;
-  elem.findOne({ _id: ObjectId(req.params.id)}).then((elem)=>{previousValue = elem.value})
+  elem.findOne({ _id: new ObjectId(req.params.id)}).then((elem) => previousValue = elem.value);
     elem.updateOne(
-        { _id: ObjectId(req.params.id) },
+        { _id: new ObjectId(req.params.id) },
         {
           $set: {
             buttonText:req.body.buttonText,
@@ -272,7 +272,7 @@ app.put("/api/elements/:id", (req, res, next) => {
           },
         }
         ).then(() => {
-          elem.findOne({ _id: ObjectId(req.params.id)}).then((elem)=>{
+          elem.findOne({ _id: new ObjectId(req.params.id)}).then((elem)=>{
           if(elem.gpio === 17){
             if(elem.value === true){
               LedKuchnia.writeSync(1)

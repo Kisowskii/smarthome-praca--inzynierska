@@ -10,7 +10,7 @@ export class CategoryElementsService {
   private elementsUpdated = new Subject<MainMenuCategoryDtos[]>();
 
   constructor(private http: HttpClient) {}
-  private baseUrl = 'http://192.168.137.108:3000/api';
+  private baseUrl = 'http://78.88.237.188:3000/api';
 
     getToken(username: string, password: string) {
       this.http.post<{token: string}>(`${this.baseUrl}/login`, { username, password })

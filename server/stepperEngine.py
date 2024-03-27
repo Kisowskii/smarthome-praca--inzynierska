@@ -1,38 +1,41 @@
-from time import sleep
-import RPi.GPIO as GPIO
-import sys;
+import gpiod
+import time
+import sys
+DIR_PIN_NO = 23 
+STEP_PIN_NO = 24 
+CW = 1     
+CCW = 0    
+SPR = 400   
+CHIP_NAME = 'gpiochip4'  
 
-DIR = 23   # Direction GPIO Pin
-STEP = 24  # Step GPIO Pin
-CW = 1     # Clockwise Rotation
-CCW = 0    # Counterclockwise Rotation
-SPR = 100   # Steps per Revolution (360 / 7.5)
+def setup():
+    global DIR_LINE, STEP_LINE
+    chip = gpiod.Chip(CHIP_NAME)
+    DIR_LINE = chip.get_line(DIR_PIN_NO)
+    STEP_LINE = chip.get_line(STEP_PIN_NO)
+    
+    DIR_LINE.request(consumer="dir_pin", type=gpiod.LINE_REQ_DIR_OUT)
+    STEP_LINE.request(consumer="step_pin", type=gpiod.LINE_REQ_DIR_OUT)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(DIR, GPIO.OUT)
-GPIO.setup(STEP, GPIO.OUT)
+def cleanup():
+    DIR_LINE.release()
+    STEP_LINE.release()
 
-step_count = SPR
-delay = .0208
+def step_motor(direction):
+    setup()
+    try:
+        step_count = SPR
+        delay = 0.0208
+        
+        for x in range(step_count):
+            DIR_LINE.set_value(CW if direction == "true" else CCW)
+            STEP_LINE.set_value(1)
+            time.sleep(delay)
+            STEP_LINE.set_value(0)
+            time.sleep(delay)
+    finally:
+        cleanup()
 
-print(sys.argv[1])
-
-
-for x in range(step_count):
-    if(sys.argv[1] == "true"):
-        print(sys.argv[1])
-        GPIO.output(DIR, CW)
-        GPIO.output(STEP, GPIO.HIGH)
-        sleep(delay)
-        GPIO.output(STEP, GPIO.LOW)
-        sleep(delay)
-    elif(sys.argv[1] == "false"):  
-        print(sys.argv[1])
-        GPIO.output(DIR, CCW)
-        GPIO.output(STEP, GPIO.HIGH)
-        sleep(delay)
-        GPIO.output(STEP, GPIO.LOW)
-        sleep(delay)
-
-
-GPIO.cleanup()
+if __name__ == "__main__":
+    direction = sys.argv[1] if len(sys.argv) > 1 else "false"
+    step_motor(direction)

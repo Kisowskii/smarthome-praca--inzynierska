@@ -1,4 +1,4 @@
-const apps = require("./app");
+const apps = require("./app.ts");
 const debug = require("debug")("node-angular");
 const http = require("http");
 
@@ -49,6 +49,6 @@ apps.set("port", port);
 const server = http.createServer(apps);
 server.on("error", onError);
 server.on("listening", onListening);
-server.listen(3000, '127.0.0.1', function() {
+server.listen(3000, '0.0.0.0', function() {
     console.log("Server now listening on 3000");
 });
