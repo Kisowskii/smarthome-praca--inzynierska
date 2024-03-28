@@ -1,0 +1,63 @@
+<div class="creating-container">
+  <mat-card color="accent">
+    <form #signupForm="ngForm" (submit)="signup(signupForm)">
+      <h1>Tworzenie nowego konta</h1>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          name="login"
+          ngModel
+          required
+          minlength="3"
+          placeholder="Twój login"
+          #loginInsput="ngModel"
+        />
+        <mat-error *ngIf="loginInsput.invalid">Proszę podać login</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          name="password"
+          ngModel
+          required
+          minlength="3"
+          placeholder="Twoje hasło"
+          #passwordInsput="ngModel"
+        />
+        <mat-error *ngIf="passwordInsput.invalid">Prosze podać hasło</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          name="name"
+          ngModel
+          required
+          minlength="3"
+          placeholder="Twoje imie"
+          #name="ngModel"
+        />
+        <mat-error *ngIf="name.invalid">Proszę podać imię</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          name="lastname"
+          required
+          ngModel
+          minlength="3"
+          placeholder="Twoje nazwisko"
+          #lastname="ngModel"
+        />
+        <mat-error *ngIf="lastname.invalid">Prosze podać nazwisko</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" type="submit">
+        Zarejestruj się
+      </button>
+    </form>
+  </mat-card>
+</div>
