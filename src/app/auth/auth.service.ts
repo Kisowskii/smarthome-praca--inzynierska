@@ -51,7 +51,7 @@ export class AuthService {
 
       this.http
         .post<{ token: string; id: string }>(
-          'http://192.168.0.16:3000/api/login',
+          'https://api.apismarthome-wisowski-konrad.com/api/login',
           user
         )
         .subscribe((response) => {
@@ -88,6 +88,6 @@ export class AuthService {
 
   createUser(login: string, password: string, role: string): Observable<any> {
     const user = { login, password, role };
-    return this.http.post<{ message: string }>('http://192.168.0.16:3000/api/users/add', user);
+    return this.http.post<{ message: string }>('https://api.apismarthome-wisowski-konrad.com/api/users/add', user);
   }
   }

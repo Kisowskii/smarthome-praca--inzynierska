@@ -10,8 +10,8 @@ export class CategoryElementsService {
   private elementsUpdated = new Subject<MainMenuCategoryDtos[]>();
 
   constructor(private http: HttpClient) {}
-  // private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
-  private baseUrl = 'http://192.168.0.16:3000/api';
+  private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
+  // private baseUrl = 'http://192.168.0.16:3000/api';
 
 
 getTokenFromStorage(): string | null {
