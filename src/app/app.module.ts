@@ -28,7 +28,7 @@ import { OutsideComponent } from './categoryElements/outside/outside.component';
 import { BedroomComponent } from './categoryElements/bedroom/bedroom.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {WebcamModule} from 'ngx-webcam';
-import { AuthInterceptor } from './login.interceptor';
+import { AuthInterceptor } from './auth/auth-interceptor';
 @NgModule({
   declarations: [
     AppComponent,

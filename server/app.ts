@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./connect.ts");
-const elem = require("./collections.ts");
+const {elements:elem, users:user} = require("./collections.ts");
 const { ObjectId } = require("mongodb");
 const bodyParser = require("body-parser");
 const app = express();
@@ -21,6 +21,7 @@ const CzujnikRuchu = new Gpio(596, 'in', 'both')
 const sensor = require('node-dht-sensor');
 const spawn = require("child_process").spawn;
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
 require('dotenv').config();
 // Reszta Twojego kodu serwera
 
@@ -56,22 +57,49 @@ app.use((req, res, next) => {
 });
 
 
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  console.log(req.body);
-  const users = {
-    login: 'login', // To jest klucz, a jego wartość to 'login'
-    password: 'password' // To jest klucz, a jego wartość to 'password'
-  };
+app.post("/api/login", (req, res) => {
+  let fetchedUser;
+  user
+    .findOne({ login: req.body.login })
+    .then((user) => {
+      if (!user) {
+        return res.status(401).json({
+          message: "Auth failed",
+        });
+      }
+      fetchedUser = user;
+    })
+    .then(() => {
+      if (fetchedUser.password !== req.body.password) {
+        return res.status(401).json({
+          message: "Auth failed",
+        });
+      }
+      return fetchedUser.password;
+    })
+    .then((result) => {
+      console.log(fetchedUser._id);
+      if (!result) {
+        return res.status(403).json({
+          message: "Auth failed",
+        });
+      }
 
-  // Poprawne używanie kluczy obiektu
-  if (users.password === password && users.login === username) {
-    // Jeśli dane logowania są poprawne, zwróć token
-    res.json({ token: process.env['SECRET_TOKEN'] });
-  } else {
-    // W przeciwnym razie zwróć błąd autentykacji
-    res.status(401).json({ message: 'Niepoprawne dane logowania' });
-  }
+      const token = jwt.sign(
+        { login: fetchedUser, userId: fetchedUser._id },
+        "adminsPaswword",
+        { expiresIn: "1h" }
+      );
+      res.status(200).json({
+        token: token,
+        id: fetchedUser._id,
+      });
+    })
+    .catch((err) => {
+      return res.status(401).json({
+        message: "Auth failed",
+      });
+    });
 });
 
 
@@ -394,13 +422,22 @@ app.put("/api/elements/:id", (req, res, next) => {
     elem.insertMany(elements, (err, docs) => {
       if (err) {
         throw new Error("No file");
-        console.log("error");
       }
   
       res.status(201).json({
         message: "Elements added successfully",
       });
     });
+    user.insertOne({login:'admin', password:'admin', role:'admin'},
+    (err, docs) => {
+      if (err) {
+        throw new Error("No file");
+      }
+  
+      res.status(201).json({
+        message: "User added successfully",
+      });
+    })
   });
 
   app.get('/', (req, res) => {
