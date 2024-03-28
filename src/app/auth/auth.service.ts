@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { User } from './user.model';
 import { Login } from './login.model';
 import { Router } from '@angular/router';
@@ -12,12 +12,14 @@ import { Router } from '@angular/router';
 export class AuthService {
   private token: string;
   private user: string;
-  private admins: User[] = [];
-  private adminsUpdated = new Subject<User[]>();
+  private users: User[] = [];
+  private usersUpdated = new Subject<User[]>();
   private isAuthenticated = false;
   private authStatusListener = new Subject<boolean>();
   private medPath: any = '/';
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.autoAuthUser();
+  }
   // store the URL so we can redirect after logging in
   redirectUrl: string | null = null;
 
@@ -47,50 +49,45 @@ export class AuthService {
       password: password,
     };
 
-      this.user = '/admins';
       this.http
         .post<{ token: string; id: string }>(
-          'http://localhost:3000/api/users/admins/login',
+          'http://192.168.0.16:3000/api/login',
           user
         )
         .subscribe((response) => {
-          console.log(response);
           const token = response.token;
-          const id = response.id;
+          // const id = response.id;
           this.token = token;
+          localStorage.setItem('authToken', token);
           if (token) {
-            this.medPath = '/admins/' + id;
             this.isAuthenticated = true;
             this.authStatusListener.next(true);
-            this.router.navigate(['/admins', id]);
+            this.router.navigate(['/menu']);
           }
         });
     }
 
+    autoAuthUser() {
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) {
+        return;
+      }
+      this.token = authToken;
+      this.isAuthenticated = true;
+      this.authStatusListener.next(true);
+      // Możesz tutaj również ustawić timer wygaśnięcia tokenu, jeśli jest dostępny
+    }
+
   logout() {
     this.token = null;
-    this.medPath = '/';
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    localStorage.removeItem('authToken'); // Usuń token
     this.router.navigate(['/']);
   }
 
-  createUser(name: string, lastname: string, login: string, password: string, role:string) {
-    const user: User = {
-      id: null,
-      login: login,
-      password: password,
-      role: role,
-    };
-
-   
-      this.http
-        .post<{ message: string }>(
-          'http://localhost:3000/api/users/admins',
-          user
-        )
-        .subscribe(() => {
-          this.admins.push(user);
-          this.adminsUpdated.next([...this.admins]);
-        });
-    }}
+  createUser(login: string, password: string, role: string): Observable<any> {
+    const user = { login, password, role };
+    return this.http.post<{ message: string }>('http://192.168.0.16:3000/api/users/add', user);
+  }
+  }

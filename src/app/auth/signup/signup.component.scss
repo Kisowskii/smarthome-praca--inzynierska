@@ -1,0 +1,114 @@
+.creating-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding: 20px;
+  max-width: 400px;
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 5%;
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 44px;
+  }
+  form {
+      width: 100%;
+  }
+
+  h1 {
+      color: #0061A3;
+      font-family: 'Roboto';
+      text-align: center;
+      margin-bottom: 32px;
+  }
+.custom-snackbar {
+  color: #fff; /* kolor tekstu */
+  background-color: #0061A3; /* tło snackbara */
+  .mat-simple-snackbar-action {
+    color: #ffcc00; /* kolor przycisku akcji */
+  }
+}
+
+  
+
+  mat-form-field {
+      width: 100%;
+      margin-bottom: 16px;
+
+      input {
+          font-size: 16px;
+          color: #333;
+      }
+  }
+
+  button {
+      width: 100%;
+      font-size: 16px;
+      color: white;
+      background-color: #0061A3;
+      border: none;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+          background-color: darken(#0061A3, 10%);
+      }
+      &.mdc-icon-button{
+        background-color: transparent !important;
+        mat-icon {
+          color: #0061A3; // Przykładowy kolor
+        }
+      }
+  }
+
+  .mat-error {
+      color: #D32F2F;
+      font-size: 14px;
+  }
+
+  mat-form-field {
+    width: 100%;
+
+    .mat-form-field-label {
+        color: #0061A3; // Kolor labelki
+        font-size: 18px; // Początkowa wielkość labelki
+    }
+
+    .mat-form-field-label-wrapper {
+        .mat-form-field-label {
+            transition: all 0.3s ease; // Animacja dla labelki
+        }
+    }
+
+    .mat-form-field-underline {
+        background-color: #0061A3; // Kolor podkreślenia inputu
+    }
+
+    .mat-form-field-appearance-fill .mat-form-field-infix {
+        border-top: 0; // Usunięcie górnej linii dla wypełnionej apperance
+    }
+
+    .mat-focused .mat-form-field-label {
+        font-size: 14px; // Zmniejszenie labelki po aktywacji/focusie
+    } 
+}
+
+}
+
+// Reusing wcag-options style for additional accessibility options
+.wcag-options {
+  margin-top: 20px;
+  button {
+      background-color: #f5f5f7;
+      color: #0061A3;
+      &:hover {
+          background-color: darken(#f5f5f7, 5%);
+      }
+  }
+}

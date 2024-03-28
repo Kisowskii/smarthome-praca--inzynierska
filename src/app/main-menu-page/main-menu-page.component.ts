@@ -1,8 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-main-menu-page',
   template: `
  <div class="main-menu-container">
+
+    <div class="menu-container">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLink]="'/signup'">Dodaj użytkownika</button>
+        <button mat-menu-item (click)="logout()">Wyloguj</button>
+      </mat-menu>
+    </div>
+
     <div class="main-menu-header">
       <h2>Twoje elementy</h2>
     </div>
@@ -23,7 +36,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main-menu-page.component.scss']
 })
 export class MainMenuPageComponent {
-
+  constructor( public authService: AuthService, private router: Router) {}
   checked
   typeOfSwitherInformations:string ='Wyświetl element według rozmieszczenia'
   menuType:string = ''
@@ -40,6 +53,9 @@ export class MainMenuPageComponent {
   }
 
   
+  logout() {
+    this.authService.logout();
+  }
 
   typeCategories:MainMenuCategoryDtos[] = [
     {buttonText:'Oświetlenie', elementType:'oswietlenie',icon:"../../assets/Oswietlenie.svg"},

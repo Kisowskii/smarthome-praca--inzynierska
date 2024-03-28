@@ -10,9 +10,6 @@ const authRoutes: Routes = [
   {
     path: 'signup',
     component: SignupComponent,
-    children: [
-      { path: 'user', component: SignupComponent },
-    ],
   },
 ];
 

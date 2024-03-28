@@ -5,6 +5,15 @@
     margin: 0 16px 16px;
     padding-bottom: 32px;
 }
+.menu-container {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+  
+    mat-icon {
+      color: #0061A3; // Dostosuj kolor
+    }
+  }
 .table-container{
     margin-top: 16px;
 }
