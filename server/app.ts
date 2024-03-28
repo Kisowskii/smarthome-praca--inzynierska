@@ -44,17 +44,38 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  // Ekstrakcja tokena z nagłówka 'Authorization'
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1]; // Format 'Bearer TOKEN'
-  if (token && token === process.env['SECRET_TOKEN']) {
-    next();
-  } else {
-    res.status(403).json({ message: authHeader });
-    return res.status(403).json({ message: token });
-  }
+app.post("/api/users/add", (req, res, next) => {
+  const doc = {
+    login: req.body.login,
+    password: req.body.password,
+    role: req.body.role,
+  };
+
+  user.findOne({ login: doc.login })
+    .then(existingUser => {
+      if (existingUser) {
+        // U�ytkownik o takim loginie ju� istnieje, zwr�� b��d i zako�cz funkcj�
+        return res.status(409).json({ message: "User with this login already exists" });
+      }
+      // U�ytkownik nie istnieje, kontynuuj dodawanie nowego
+      return user.insertOne(doc);
+    })
+    .then(result => {
+      // Sprawd�, czy result nie jest undefined, co mo�e oznacza�, �e operacja dodawania nie zosta�a wykonana
+      if (result && result.insertedId) {
+        res.status(201).json({ message: "User added successfully", userId: result.insertedId });
+      }
+    })
+    .catch(err => {
+      console.error("Error adding user:", err);
+      // Sprawd�, czy nie wys�ano ju� odpowiedzi
+      if (!res.headersSent) {
+        res.status(500).json({ message: "Error adding user" });
+      }
+    });
 });
+
+
 
 
 app.post("/api/login", (req, res) => {
@@ -78,7 +99,6 @@ app.post("/api/login", (req, res) => {
       return fetchedUser.password;
     })
     .then((result) => {
-      console.log(fetchedUser._id);
       if (!result) {
         return res.status(403).json({
           message: "Auth failed",
