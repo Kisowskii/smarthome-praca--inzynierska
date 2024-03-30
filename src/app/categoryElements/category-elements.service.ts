@@ -10,8 +10,8 @@ export class CategoryElementsService {
   private elementsUpdated = new Subject<MainMenuCategoryDtos[]>();
 
   constructor(private http: HttpClient) {}
+  // private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
   private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
-  // private baseUrl = 'http://192.168.0.16:3000/api';
 
 
 getTokenFromStorage(): string | null {
@@ -131,6 +131,7 @@ getTokenFromStorage(): string | null {
     value:string | boolean,
     automation:boolean,
   ) {
+    const userId = localStorage.getItem('userId');
     const element: MainMenuCategoryDtos = {
       _id:_id,
     buttonText:buttonText,
@@ -139,6 +140,7 @@ getTokenFromStorage(): string | null {
     icon:icon,
     value:value ,
     automation:automation,
+    userId:userId
     };
     this.http
       .put(`${this.baseUrl}/elements/` + _id, element)

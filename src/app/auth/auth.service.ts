@@ -56,9 +56,11 @@ export class AuthService {
         )
         .subscribe((response) => {
           const token = response.token;
+          const id = response.id
           // const id = response.id;
           this.token = token;
           localStorage.setItem('authToken', token);
+          localStorage.setItem('userId', id);
           if (token) {
             this.isAuthenticated = true;
             this.authStatusListener.next(true);
@@ -87,7 +89,7 @@ export class AuthService {
   }
 
   createUser(login: string, password: string, role: string): Observable<any> {
-    const user = { login, password, role };
-    return this.http.post<{ message: string }>('https://api.apismarthome-wisowski-konrad.com/api/users/add', user);
-  }
+  const user = { login, password, role };
+  return this.http.post<{ message: string }>('https://api.apismarthome-wisowski-konrad.com/api/users/add', user);
+}
   }

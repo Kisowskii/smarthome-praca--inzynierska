@@ -8,5 +8,6 @@ interface MainMenuCategoryDtos{
     automation?:boolean;
     gpio?:number;
     display?:boolean;
+    userId?:string;
 }
 
