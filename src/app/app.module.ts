@@ -11,6 +11,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatButtonModule} from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,6 +34,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {WebcamModule} from 'ngx-webcam';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { AuthModule } from './auth/auth.module';
+import { ChartsDialogComponent } from './main-menu-page/modals/chart-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,8 @@ import { AuthModule } from './auth/auth.module';
     BathroomComponent,
     LivingRoomComponent,
     OutsideComponent,
-    BedroomComponent
+    BedroomComponent,
+    ChartsDialogComponent
   ],
   imports: [
     AuthModule,
@@ -63,7 +67,9 @@ import { AuthModule } from './auth/auth.module';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    MatDialogModule,
     BrowserAnimationsModule,
+    NgxChartsModule
   ],
   
   providers: [

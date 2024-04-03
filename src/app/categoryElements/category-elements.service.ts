@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
@@ -11,7 +11,7 @@ export class CategoryElementsService {
 
   constructor(private http: HttpClient) {}
   // private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
-  private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
+  private baseUrl = 'http://192.168.137.78:3000/api';
 
 
 getTokenFromStorage(): string | null {
@@ -22,31 +22,24 @@ getTokenFromStorage(): string | null {
 };
 
  
-  getAllElements() {
-    this.http
-      .get<{ message: string; elem: MainMenuCategoryDtos[] }>(
-        `${this.baseUrl}/elements` 
-      )
-      .pipe(
-        map((elementsData) => {
-          return elementsData.elem.map((element) => {
-            return {
-              _id:element._id,
-              buttonText:element.buttonText,
-              elementType:element.elementType,
-              elementPosition:element.elementPosition,
-              icon:element.icon,
-              value:element.value,
-              automation:element.automation
-            };
-          });
-        })
-      )
-      .subscribe((transformationsElements) => {
-        this.elements = transformationsElements;
-        this.elementsUpdated.next([...this.elements]);
-      });
-  }
+  
+getAllElements(): Observable<any[]> {
+  return this.http
+    .get<{ message: string; elem: any[] }>(`${this.baseUrl}/elements`)
+    .pipe(
+      map((elementsData) => {
+        return elementsData.elem.map((element) => ({
+          _id: element._id,
+          buttonText: element.buttonText,
+          elementType: element.elementType,
+          elementPosition: element.elementPosition,
+          icon: element.icon,
+          value: element.value,
+          automation: element.automation,
+        }));
+      })
+    );
+}
 
   getElementsByType(type:string) {
     this.http
@@ -154,4 +147,5 @@ getTokenFromStorage(): string | null {
         this.elementsUpdated.next([...this.elements]);
       });
   }
+
 }
