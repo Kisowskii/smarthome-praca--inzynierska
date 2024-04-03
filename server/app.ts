@@ -1,7 +1,8 @@
 const express = require("express");
 const db = require("./connect.ts");
-const {elements:elem, users:user} = require("./collections.ts");
+const {elements:elem, users:user, logs:activityLogs, settings:setting} = require("./collections.ts");
 const { ObjectId } = require("mongodb");
+const fs = require('fs');
 const bodyParser = require("body-parser");
 const app = express();
 const { version, Chip, Line } = require("node-libgpiod");
@@ -122,6 +123,37 @@ app.post("/api/login", (req, res) => {
     });
 });
 
+app.post("/api/settings", async (req, res) => {
+  const { name, enabled, userId } = req.body;
+  try { 
+    const result = await setting.updateOne(
+      { name, userId },
+      { $set: { enabled }},
+      { upsert: true }
+    );
+    res.status(200).json({ message: "Setting updated successfully", name, enabled });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating setting", error });
+  }
+});
+
+
+app.get("/api/settings/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const settings = await setting.find({ userId }).toArray();
+    if (!settings.length) { // Sprawd� czy tablica nie jest pusta
+      return res.status(404).json({ message: "Settings not found" });
+    }
+    res.status(200).json(settings);
+  } catch (error) {
+    console.error("Error fetching settings:", error);
+    res.status(500).json({ message: "Error fetching settings", error });
+  }
+});
+
+
+
 
  CzujnikSilnik.watch((err, value)=>{
   if (err) { //if an error
@@ -135,10 +167,8 @@ app.post("/api/login", (req, res) => {
 
 
         if(value===1){
-          console.log("prawo");
     spawn('python',["server/stepperEngine.py", true]);}
   else{
-     console.log("lewo");
     spawn('python',["server/stepperEngine.py", false]);}
     } 
   });
@@ -151,7 +181,7 @@ app.post("/api/login", (req, res) => {
   return;
   }
   
-  elem.findOne({ gpio:17 }).then((element) => {
+  elem.findOne({ gpio:588 }).then((element) => {
     if (element && element.automation) {
       LedKuchnia.writeSync(value)
       if (value === 1 ) value = true
@@ -169,7 +199,7 @@ app.post("/api/login", (req, res) => {
    console.error('There was an error', err); //output error message to console
  return;
   }
-  elem.findOne({ gpio:22 }).then((element) => {
+  elem.findOne({ gpio:598 }).then((element) => {
     if (element && element.automation) {
      LedSypialnia.writeSync(value)
       if (value === 1 ) value = true
@@ -186,7 +216,7 @@ CzujnikLazienka.watch((err, value)=>{
     console.error('There was an error', err); //output error message to console
   return;
   }
-  elem.findOne({ gpio:27 }).then((element) => {
+  elem.findOne({ gpio:593 }).then((element) => {
     if (element && element.automation) {
       LedLazienka.writeSync(value)
        if (value === 1 ) value = true
@@ -248,19 +278,19 @@ app.get("/api/elements", async (req, res, next) => {
   elem.find().toArray().then((elements)=>{
     elements.forEach((element)=>{
       
-        if(element.gpio === 17){
+        if(element.gpio === 588){
         if(element.value === true){
           LedKuchnia.writeSync(1)
         }else LedKuchnia.writeSync(0)
-      } else if (element.gpio === 27){
+      } else if (element.gpio === 598){
         if(element.value === true){
           LedSypialnia.writeSync(1)
         }else LedSypialnia.writeSync(0)
-      } else if (element.gpio === 22){
+      } else if (element.gpio === 593){
         if(element.value === true){
           LedLazienka.writeSync(1)
         }else LedLazienka.writeSync(0)
-      }else if (element.gpio === 12){
+      }else if (element.gpio === 583){
         if(element.value === true){
           Klimatyzacja.writeSync(1)
         }else Klimatyzacja.writeSync(0)
@@ -295,8 +325,13 @@ app.get("/api/elements", async (req, res, next) => {
     });
     })
 
+    
+    
+
 app.put("/api/elements/:id", (req, res, next) => {
   let previousValue;
+  const { value, userId } = req.body; // Nowy stan urz�dzenia
+  const deviceId = req.params.id; // ID urz�dzenia
   elem.findOne({ _id: new ObjectId(req.params.id)}).then((elem) => previousValue = elem.value);
     elem.updateOne(
         { _id: new ObjectId(req.params.id) },
@@ -313,19 +348,19 @@ app.put("/api/elements/:id", (req, res, next) => {
         }
         ).then(() => {
           elem.findOne({ _id: new ObjectId(req.params.id)}).then((elem)=>{
-          if(elem.gpio === 17){
+          if(elem.gpio === 588){
             if(elem.value === true){
               LedKuchnia.writeSync(1)
             }else LedKuchnia.writeSync(0)
-          } else if (elem.gpio === 27){
+          } else if (elem.gpio === 598){
             if(elem.value === true){
               LedSypialnia.writeSync(1)
             }else LedSypialnia.writeSync(0)
-          } else if (elem.gpio === 22){
+          } else if (elem.gpio === 593){
             if(elem.value === true){
               LedLazienka.writeSync(1)
             }else LedLazienka.writeSync(0)
-          } else if (elem.gpio === 12){
+          } else if (elem.gpio === 583){
             if(elem.value === true){
           Klimatyzacja.writeSync(1)
             }else Klimatyzacja.writeSync(0)
@@ -335,12 +370,65 @@ app.put("/api/elements/:id", (req, res, next) => {
            }else if(elem.value === false && elem.value !== previousValue) {
              spawn('python',["server/stepperEngine.py", false]);
          }}
+         logUserActivity(userId, deviceId, value);
           })
-        
         res.status(200).json();
       });
   });
-  
+
+  app.get('/api/ml/update', (req, res) => {
+    const csvCreateProcess = spawn('./server/.venv/bin/python3', ['server/csvCreate.py']);
+
+    csvCreateProcess.stdout.on('data', (data) => {
+        console.log(`stdout from csvCreate.py: ${data}`);
+    });
+
+    csvCreateProcess.stderr.on('data', (data) => {
+        console.error(`stderr from csvCreate.py: ${data}`);
+    });
+
+    csvCreateProcess.on('close', (code) => {
+        console.log(`csvCreate.py exited with code ${code}`);
+
+        if (code === 0) {
+            const jsonForDiagram = spawn('./server/.venv/bin/python3', ['server/jsonForDiagram.py']);
+
+            jsonForDiagram.stdout.on('data', (data) => {
+                console.log(`stdout from jsonForDiagram.py: ${data}`);
+            });
+
+            jsonForDiagram.stderr.on('data', (data) => {
+                console.error(`stderr from jsonForDiagram.py: ${data}`);
+            });
+
+            jsonForDiagram.on('close', (codeJson) => {
+                console.log(`jsonForDiagram.py exited with code ${codeJson}`);
+                // Odes�anie odpowiedzi do klienta w formacie JSON
+                if (codeJson === 0) {
+
+                  generateAiModels();
+                    res.json({ message: 'Skrypty Pythona zako�czone pomy�lnie.', csvCreateCode: code, jsonForDiagramCode: codeJson });
+                } else {
+                    res.status(500).json({ error: `Blad podczas wykonania jsonForDiagram.py z kodem ${codeJson}` });
+                }
+            });
+        } else {
+            res.status(500).json({ error: `Blad podczas wykonania csvCreate.py z kodem ${code}` });
+        }
+    });
+});
+
+
+  app.get('/api/chart-data', (req, res) => {
+    fs.readFile('./server/chart_data.json', (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Nie udalo sie wczytac danych wykresu.');
+        }
+        res.json(JSON.parse(data));
+    });
+  });
+
   app.post("/api/elements", (req, res, next) => {
     const elements = [{
         buttonText:"Lampa",
@@ -349,7 +437,7 @@ app.put("/api/elements/:id", (req, res, next) => {
         icon:"../../assets/Oswietlenie.svg",
         value:false,
         automation:false,
-        gpio:17,
+        gpio:588,
         display:true
     },{
         buttonText:"Lampa",
@@ -358,21 +446,21 @@ app.put("/api/elements/:id", (req, res, next) => {
         icon:"../../assets/Oswietlenie.svg",
         value:false,
         automation:false,
-        gpio:27,
+        gpio:598,
         display:true
     },{
         buttonText:"Lampa",
         elementType:"Oswietlenie",
-        elementPosition:"Łazienka",
+        elementPosition:"Lazienka",
         icon:"../../assets/Oswietlenie.svg",
         value:false,
         automation:false,
-        gpio:22,
+        gpio:593,
         display:true
     },{
         buttonText:"Temperatura",
         elementType:"Temperatura",
-        elementPosition:"Łazienka",
+        elementPosition:"Lazienka",
         icon:"../../assets/Temperatura.svg",
         value:21,
         gpio:21,
@@ -381,7 +469,7 @@ app.put("/api/elements/:id", (req, res, next) => {
     },{
         buttonText:"Wilgotność",
         elementType:"Wilgotność",
-        elementPosition:"Łazienka",
+        elementPosition:"Lazienka",
         icon:"../../assets/Wilgotnosc.svg",
         value:21,
         gpio:21,
@@ -399,7 +487,7 @@ app.put("/api/elements/:id", (req, res, next) => {
     },{
         buttonText:"Monitoring",
         elementType:"Monitoring",
-        elementPosition:"Na zewnątrz",
+        elementPosition:"Na zewnatrz",
         icon:"../../assets/Monitoring.svg",
         value:false,
         automation:false,
@@ -416,7 +504,7 @@ app.put("/api/elements/:id", (req, res, next) => {
     },{
         buttonText:"Czujnik zalania",
         elementType:"Zalanie",
-        elementPosition:"Łazienka",
+        elementPosition:"Lazienka",
         icon:"../../assets/Czujnik_Zalania.svg",
         value:"Nie",
         gpio:20,
@@ -428,7 +516,7 @@ app.put("/api/elements/:id", (req, res, next) => {
         elementPosition:"Salon",
         icon:"../../assets/Czujnik_Zalania.svg",
         value:false,
-        gpio:12,
+        gpio:583,
         automation:false,
         display:true
     },{
@@ -439,27 +527,195 @@ app.put("/api/elements/:id", (req, res, next) => {
         value:req.body.value,
         automation:req.body.automation
     },];
-    elem.insertMany(elements, (err, docs) => {
-      if (err) {
-        throw new Error("No file");
+     elem.count().then((el)=>{
+      if(el === 0){
+        elem.insertMany(elements, (err, docs) => {
+          if (err) {
+            throw new Error("No file");
+          }
+          
+          res.status(201).json({
+            message: "Elements added successfully",
+          });
+        });
       }
+     })
+    if(user.findOne({login:'admin', password:'admin', role:'admin'})){
+      user.insertOne({login:'admin', password:'admin', role:'admin'},
+      (err, docs) => {
+        if (err) {
+          throw new Error("No file");
+        }
+        res.status(201).json({
+          message: "User added successfully",
+        });
+      })
+
+    }
   
-      res.status(201).json({
-        message: "Elements added successfully",
-      });
-    });
-    user.insertOne({login:'admin', password:'admin', role:'admin'},
-    (err, docs) => {
-      if (err) {
-        throw new Error("No file");
-      }
-  
-      res.status(201).json({
-        message: "User added successfully",
-      });
-    })
   });
 
+
+  async function logUserActivity(userId, deviceId, state) {
+    const activityLog = {
+      userId,
+      deviceId,
+      state, // true or false, or any specific value
+      timestamp: new Date() // Current date and time
+    };
+    const count = await activityLogs.countDocuments();
+    if (count === 0) {
+        try {
+            const adminUser = await user.findOne({ login: "admin" });
+            if (!adminUser) {
+                return console.error("Admin user not found.");
+            }
+    
+            const interactableElements = await elem.find({ gpio: { $in: [588, 598, 593, 24, 583] } }).toArray();
+    
+            const activityLogsData = [];
+            for (let i = 0; i < 5000; i++) {
+              interactableElements.forEach(element => {
+                  const randomDate = new Date();
+                  randomDate.setDate(randomDate.getDate() - Math.floor(Math.random() * 30));
+                  randomDate.setHours(Math.floor(Math.random() * 24));
+                  randomDate.setMinutes(Math.floor(Math.random() * 60));
+                  randomDate.setSeconds(Math.floor(Math.random() * 60));
+                  randomDate.setMilliseconds(0);
+      
+                  const dayOfWeek = randomDate.getDay(); // Dzie� tygodnia jako liczba (0-6)
+                  const randomHour = randomDate.getHours();
+                  let simulatedState = false;
+      
+                  // Specjalne zachowania zale�ne od typu urz�dzenia i lokalizacji
+                  switch (element.elementType) {
+                      case "Rolety":
+                          if (element.elementPosition === "Kuchnia") {
+                              simulatedState = (randomHour > 7) ? true : (randomHour < 20) ? false : simulatedState;
+                          }
+                          break;
+                      case "Klimatyzacja":
+                          if (element.elementPosition === "Salon") {
+                              simulatedState = dayOfWeek >= 1 && dayOfWeek <= 5 && (randomHour >= 15 && randomHour <= 18);
+                          }
+                          break;
+                      case "Oswietlenie":
+                          if (element.elementPosition === "Kuchnia" && (randomHour >= 18 && randomHour <= 20)) simulatedState = true;
+                          else if (element.elementPosition === "Lazienka" && ((randomHour >= 6 && randomHour <= 8) || (randomHour >= 19 && randomHour <= 22))) simulatedState = true;
+                          else if (element.elementPosition === "Sypialnia" && (randomHour >= 17 && randomHour <= 21)) simulatedState = true;
+                          else if (element.elementPosition === "Salon" && dayOfWeek >= 1 && dayOfWeek <= 5 && (randomHour === 19 || randomHour === 23)) simulatedState = randomHour === 19;
+                          break;
+                  }
+      
+                  // Dodanie losowo�ci do symulacji niespodziewanych zachowa�
+                  if (Math.random() < 0.1) { // 5% szans na niespodziewane zachowanie
+                      simulatedState = !simulatedState;
+                  }
+      
+                  // Weekendowe zwyczaje - brak aktywno�ci do 12:00
+                  if ((dayOfWeek === 0 || dayOfWeek === 6) && randomHour < 8) simulatedState = true;
+      
+                  const logEntry = {
+                      userId: adminUser._id,
+                      deviceId: element._id,
+                      state: simulatedState,
+                      timestamp: randomDate.toISOString(),
+                  };
+                  activityLogsData.push(logEntry);
+              });
+          }
+            await activityLogs.insertMany(activityLogsData);
+            console.error("Activity logs generated successfully.");
+        } catch (err) {
+            console.error(err);
+            console.error("Error generating activity logs.");
+        }
+    }
+
+
+    activityLogs.insertOne(activityLog, (err, result) => {
+      if (err) {
+        console.error("Error logging user activity:", err);
+        return;
+      }
+      console.log("User activity logged successfully");
+    });
+  }
+
+    
+    // Funkcja do aktualizacji stan�w urz�dze�
+    const generateAiModels = async () => {
+      
+        const pythonProcess = spawn('./server/.venv/bin/python3', ['server/generate-model.py']);
+        pythonProcess.stdout.on('data', (data) => {
+          console.log(`stdout: ${data}`);
+        });
+        pythonProcess.stderr.on('data', (data) => console.error(`stderr: ${data}`));
+        pythonProcess.on('close', (code) => console.log(`Proces Pythona zako�czony z kodem ${code}`));
+      }
+    
+    const updateDeviceStatesForUsersWithAIEnabled = async () => {
+      // Znajd� u�ytkownik�w z w��czon� sztuczn� inteligencj�
+      const userSetting = await setting.findOne({ name: 'aiEnabled', enabled: true });
+        const userId = userSetting.userId;
+        // Dla ka�dego u�ytkownika znajd� urz�dzenia, kt�re mog� by� sterowane
+        const devices = await elem.find({ gpio: { $in: [588, 598, 593, 24, 583] } }).toArray();
+    
+        // Dla ka�dego urz�dzenia wykonaj predykcj� i zaktualizuj stan
+        for (const device of devices) {
+          await updateDeviceState(userId, device._id.toString());
+        }
+    };
+    
+    const updateDeviceState = async (userId, deviceId) => {
+      const current_hour = new Date().getHours();
+      const current_day_of_week = new Date().getDay();
+      const is_weekend = [5, 6].includes(current_day_of_week) ? 1 : 0;
+      // Uruchom skrypt Pythona do predykcji stanu urz�dzenia
+      // const pythonProcess = spawn('./server/.venv/bin/python', ['server/predictState.py', userId, deviceId, current_hour, current_day_of_week, is_weekend], { stdio: [null, { highWaterMark: 1024 * 1024 }, { highWaterMark: 1024 * 1024 }] });
+      const pythonProcess = await spawn('./server/.venv/bin/python3', ['server/predictState.py', userId, deviceId, current_hour, current_day_of_week, is_weekend], {
+        stdio: ['pipe', 'pipe', 'pipe'] // Domy�lnie dla stdio jest 'pipe', co oznacza, �e Node.js b�dzie buforowa� dane wej�ciowe/wyj�ciowe. Ustawienie na 'inherit' u�ywa strumieni rodzica.
+      });
+      if (!pythonProcess) {
+        console.error('Nie uda�o si� utworzy� procesu Pythona');
+        return;
+    }
+      pythonProcess.stdout.on('data', async (data) => {
+        const prediction = +data.toString().trim(); // Oczekiwana predykcja to '0' (wy��czony) lub '1' (w��czony)
+        const boolPrediction = prediction === 1 ? true: false;
+        // Aktualizacja stanu urz�dzenia w bazie danych
+        const element = await elem.findOne({_id: new ObjectId(deviceId)})
+        if(element.gpio === LedKuchnia._gpio){
+          LedKuchnia.writeSync(prediction)
+        } else if(element.gpio === LedLazienka._gpio){
+          LedLazienka.writeSync(prediction)
+        } else if(element.gpio === LedSypialnia._gpio){
+          LedSypialnia.writeSync(prediction)
+        } else if(element.gpio === Klimatyzacja._gpio){
+          Klimatyzacja.writeSync(prediction)
+        } else if(element.gpio === 24 && element.value !== boolPrediction){
+          if(prediction === 1)spawn('python',["server/stepperEngine.py", true]);
+          else if(prediction === 0)spawn('python',["server/stepperEngine.py", false]);
+        }
+
+
+
+        await elem.updateOne(
+          { _id: new ObjectId(deviceId) },
+          { $set: { value: prediction === 1 } }
+        );
+    
+        // console.log(`Updated device ${deviceId} to ${prediction === 1 ? 'ON' : 'OFF'}`);
+      });
+      pythonProcess.on('error', (error) => {
+        console.error(`Wyst�pi� b��d: ${error.message}`);
+    });
+      pythonProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+      });
+    };
+    // Cykliczne sprawdzanie i aktualizacja stan�w urz�dze� co 2 minuty
+    setInterval(updateDeviceStatesForUsersWithAIEnabled, 30000);
   app.get('/', (req, res) => {
     res.send({hello: 'world'});
 });
