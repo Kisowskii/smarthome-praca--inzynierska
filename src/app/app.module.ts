@@ -35,6 +35,8 @@ import {WebcamModule} from 'ngx-webcam';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { AuthModule } from './auth/auth.module';
 import { ChartsDialogComponent } from './main-menu-page/modals/chart-dialog.component';
+import { VideoModalComponent } from './categoryElements/monitoring/modal/camera.moda.component';
+import { FaceIdModalComponent } from './main-menu-page/modals/faceIdGenerator.modal.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { ChartsDialogComponent } from './main-menu-page/modals/chart-dialog.comp
     LivingRoomComponent,
     OutsideComponent,
     BedroomComponent,
-    ChartsDialogComponent
+    ChartsDialogComponent,
+    VideoModalComponent,
+    FaceIdModalComponent
   ],
   imports: [
     AuthModule,

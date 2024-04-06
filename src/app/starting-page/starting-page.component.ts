@@ -26,13 +26,9 @@ export class StartingPageComponent  {
   constructor( public elementService: CategoryElementsService, private router: Router) {}
 
   elements: MainMenuCategoryDtos[] = []
-  elementSub:Subscription
   element;
   ngOnInit() {
-    this.element = this.elementService.getAllElements();
-    this.elementSub = this.elementService
-      .getElementUpdateListener()
-      .subscribe((elements: MainMenuCategoryDtos[]) => {
+    this.element = this.elementService.getAllElements().subscribe((elements: MainMenuCategoryDtos[]) => {
         this.elements = elements
       });
       setTimeout(() => {
@@ -43,7 +39,7 @@ export class StartingPageComponent  {
     if(this.elements.length === 0){
       this.elementService.addElementBase()
     }
-    this.elementSub.unsubscribe();
+    this.element.unsubscribe();
   }
  
 }

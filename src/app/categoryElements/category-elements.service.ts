@@ -147,5 +147,17 @@ getAllElements(): Observable<any[]> {
         this.elementsUpdated.next([...this.elements]);
       });
   }
+  generateFaceIdModel(): Observable<any> {
+    const userId = localStorage.getItem('userId');
+    return this.http.post<{ message: string }>(`http://192.168.137.78:5000/start_face_collection`, { person_id: userId, duration: 10 }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });    
+  }
+  
 
+
+ 
+  
 }

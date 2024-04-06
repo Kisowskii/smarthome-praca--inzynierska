@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SettingsService } from './settings.service';
 import { ChartsDialogComponent } from './modals/chart-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { FaceIdModalComponent } from './modals/faceIdGenerator.modal.component';
 @Component({
   selector: 'app-main-menu-page',
   template: `
@@ -17,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
         <button mat-menu-item (click)="showCharts()">Pokaż wykresy</button>
         <button mat-menu-item [routerLink]="'/signup'">Dodaj użytkownika</button>
         <button mat-menu-item (click)="updateAIModel()">Aktualizuj model AI</button>
+        <button mat-menu-item (click)="faceIdScanning()">Zeskanuj swoją twarz</button>
         <button mat-menu-item (click)="logout()">Wyloguj</button>
       </mat-menu>
     </div>
@@ -94,6 +96,17 @@ export class MainMenuPageComponent implements OnInit {
   updateAIModel() {
     this.settingsService.updateAiModel()
   }
+  faceIdScanning(){
+    this.dialog.open(FaceIdModalComponent, {
+      width: '100%',
+      height: '100%',
+      maxWidth: '100%',
+      autoFocus: true,
+      data: {}
+    });
+  }
+  
+
   showCharts() {
     this.settingsService.fetchChartData().subscribe(chartData => {
       this.openChartsDialog(chartData);
