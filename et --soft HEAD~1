@@ -1,0 +1,266 @@
+[33mcommit 776c2b619fd606db4faeaa7ab14bb9ad97909b1d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Apr 6 12:22:44 2024 +0200
+
+    Wykrywanie twarzy i kamerka
+
+[33mcommit 8cac80d7008abb04b728eaa1c4602899e919b83e[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Apr 3 09:30:48 2024 +0200
+
+    Poprawa UI i dodanie wykresów zwyczajów użytkowników
+
+[33mcommit eaf8e689fc90c8cfc662a7b524e47924f6374ddd[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Apr 3 09:22:29 2024 +0200
+
+    Dodanie modeli Ai zwyczaje uzytkownikow
+
+[33mcommit 02d494ea7b25ec537b8ae155017876e753ab52a0[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 30 16:13:00 2024 +0100
+
+    Wprowadzenie do stworzenia kolekcji pod model ml
+
+[33mcommit 869e751d2673eaeb19e40a3b3303fac0e78bad34[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Thu Mar 28 19:41:32 2024 +0100
+
+    Zmiana api na publiczne
+
+[33mcommit 9c9b2bf0d135c8c366be7c9fe63ba18e98f45212[m
+Merge: 42b6205b df6b3d0e
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Thu Mar 28 19:38:56 2024 +0100
+
+    Merge branch 'master' of https://github.com/Kisowskii/smarthome-praca--inzynierska
+
+[33mcommit 42b6205bff60e8ba81ff2b82d616709f01533b31[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Thu Mar 28 19:38:50 2024 +0100
+
+    UI autentykacji i autoryzacji
+
+[33mcommit df6b3d0ed53e11de1fd38047b42c1bba7defe533[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Thu Mar 28 19:38:06 2024 +0100
+
+    Dziaajcy serwer z autentykacja
+
+[33mcommit ca702c3697b98b45cc66a4dd1c410e479108245c[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Thu Mar 28 08:14:19 2024 +0100
+
+    dodanie autoryzacji po stronie serwera
+
+[33mcommit bb6dd1750de2b01ec537ebefce0c3b9f93574019[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Thu Mar 28 08:06:50 2024 +0100
+
+    Dodanie autoryzacji
+
+[33mcommit 5f7adc04cca92ba1355c3c106a5e49b2842546f7[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 20:09:48 2024 +0100
+
+    Poprawa pobierania elementw po pomieszczeniach
+
+[33mcommit 09a0c9ef83f96c856e1e1a1717d61eb23c9a3089[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 18:31:29 2024 +0100
+
+    Strona startowa poprawka
+
+[33mcommit 29aa1dbd9de50f26d126b384557da6020d52d7b3[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 18:07:03 2024 +0100
+
+    Edycja strony logowania
+
+[33mcommit 7275d598510f6c455a45aa56ac0ce900ace37aed[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 17:58:50 2024 +0100
+
+    Poprawa url do dns
+
+[33mcommit ad8b111791346a9238a1584ad55403541302f777[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 17:54:59 2024 +0100
+
+    Podmiana url na domyln domene
+
+[33mcommit b32b29257dba71dddff8f0b2831e28636fdafc18[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 17:41:33 2024 +0100
+
+    aktualizacja node_modules z serwera
+
+[33mcommit e7fba9d599beb272d2d2fddc930318f35f4b07fb[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 17:40:54 2024 +0100
+
+    konfiguracja proxy
+
+[33mcommit b116bc0ba26699cd2746bb464af5bbd9e2b1519d[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Wed Mar 27 17:40:30 2024 +0100
+
+    Poprawki do komunkacji z vercel.com
+
+[33mcommit a3a28f56fa2bb4c855171059211c788abc3f8b59[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sun Mar 24 08:24:00 2024 +0100
+
+    kolejne podbicia
+
+[33mcommit bb2a70e0a8e7ad308150e36c91f94f1383905f2e[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sun Mar 24 08:19:44 2024 +0100
+
+    Podbicie angulara do 17
+
+[33mcommit 392c90a5251f70024aab48d3f6935e2aac4a3e1a[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sun Mar 24 08:14:58 2024 +0100
+
+    ANgular 16
+
+[33mcommit dadcb6ba6efb0759e58fb6f8e9500c8d22e50676[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 23 15:24:39 2024 +0100
+
+    Dalsze podbijanie angulara
+
+[33mcommit e4e77ae6d573c5dfc751dc5a3dd3847123135e8d[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 23 15:08:38 2024 +0100
+
+    Podbicia angulara
+
+[33mcommit 16322d6a344e54bddcd435e8f6bc74f75befe9fc[m[33m ([m[1;31mSmarthome/master[m[33m)[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 16 21:22:13 2024 +0100
+
+    Poprawki pod https
+
+[33mcommit f948497704c632c00a1b0552983e231bcfc19d67[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 16 18:55:53 2024 +0100
+
+    Poprawa weryfikacji z interceptorem
+
+[33mcommit 9dfb174482b70bce1b039d9fccc9da38cc7debb1[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 16 17:02:41 2024 +0100
+
+    Dodanie tokena weryfikującego
+
+[33mcommit ba4797778f5b4c2c94922697efc1f104c8607063[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 16 12:25:57 2024 +0000
+
+    Autoryzacja tokenem
+
+[33mcommit 05cff538efb9fb6ee686da34bc40ae363f23a7f7[m
+Merge: 391d65aa b574e840
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 16 09:20:52 2024 +0000
+
+    Merge branch 'master' of https://github.com/Kisowskii/smarthome-praca--inzynierska
+
+[33mcommit 391d65aae03f4a2810b79de9e7efc01fe0318b7b[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Sat Mar 16 09:19:05 2024 +0000
+
+    Wznowienie prac do pracy magisterskiej
+
+[33mcommit b574e8401a2786bf3dc1254fa15588e6fb9ba128[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Fri Mar 15 16:15:14 2024 +0100
+
+    Dodanie screenshotów do readme.md
+
+[33mcommit 6ee2d741d46bcb48df376f35296b43c515f4935a[m
+Author: Kisowskii <111387879+Kisowskii@users.noreply.github.com>
+Date:   Fri Mar 15 15:33:26 2024 +0100
+
+    Update README.md
+
+[33mcommit 6b7e8529c641279c5d2f62108ee97b158f00a15a[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 15:19:59 2024 +0100
+
+    Kolejna poprawa ymla
+
+[33mcommit 7b1a6f23e7d07eeac88f4f2c76e7b99065083c04[m
+Merge: 1c12c17c 7571a33d
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 15:17:14 2024 +0100
+
+    Merge branch 'master' of https://github.com/Kisowskii/smarthome-praca--inzynierska
+
+[33mcommit 1c12c17ccefe3ff59bf6cb2c354f7e54b1158180[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 15:15:40 2024 +0100
+
+    Zmiana ymla
+
+[33mcommit 7571a33d157504d2e2bf039fee6bd1778ce0d464[m
+Author: Kisowskii <111387879+Kisowskii@users.noreply.github.com>
+Date:   Mon Jan 8 15:10:12 2024 +0100
+
+    Add or update the Azure App Service build and deployment workflow config
+
+[33mcommit ee85fd2b3f3ccfcb8119be1de6790b53c07661f0[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 15:06:57 2024 +0100
+
+    Dodanie pliku karmy
+
+[33mcommit eb721de29af5c84daf5163bbc896934da40c3056[m
+Merge: c8bf7774 db2fcb55
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 14:56:37 2024 +0100
+
+    Merge branch 'master' of https://github.com/Kisowskii/smarthome-praca--inzynierska
+
+[33mcommit c8bf7774981215e9500c518e03da5e0b59f79326[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 14:56:32 2024 +0100
+
+    Revert "Test azure"
+    
+    This reverts commit 6e0500622e3f540f53290eb60890be9b3bdcbc68.
+
+[33mcommit db2fcb553908ef02d807057f4f19974c4ec545ee[m
+Author: Kisowskii <111387879+Kisowskii@users.noreply.github.com>
+Date:   Mon Jan 8 14:47:03 2024 +0100
+
+    Add or update the Azure App Service build and deployment workflow config
+
+[33mcommit 55e127889bff69e58f6ee315ded20c9d6eb90900[m
+Merge: 6e050062 37907928
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 14:46:11 2024 +0100
+
+    Merge branch 'master' of https://github.com/Kisowskii/smarthome-praca--inzynierska
+
+[33mcommit 6e0500622e3f540f53290eb60890be9b3bdcbc68[m
+Author: Kisowskii <Mrtiku1998@gmail.com>
+Date:   Mon Jan 8 14:46:06 2024 +0100
+
+    Test azure
+
+[33mcommit 37907928331184e1e96b508bb61f33ecf0de13cb[m
+Author: Kisowskii <111387879+Kisowskii@users.noreply.github.com>
+Date:   Sun Jan 7 21:02:05 2024 +0100
+
+    Delete .github/workflows directory
+
+[33mcommit dba77bc3bf3310a7d66251472f4ccc339a2d6ba8[m
+Author: Kisowskii <111387879+Kisowskii@users.noreply.github.com>
+Date:   Sun Jan 7 20:57:06 2024 +0100
+
+    Add or update the Azure App Service build and deployment workflow config
+
+[33mcommit f

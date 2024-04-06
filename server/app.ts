@@ -44,7 +44,7 @@ app.use((req, res, next) => {
   );
   next();
 });
-
+let cameraProcess = null;
 app.post("/api/users/add", (req, res, next) => {
   const doc = {
     login: req.body.login,
@@ -262,6 +262,8 @@ elem.updateOne(
         {$set: {value:value, }})
 })
   
+
+
 app.get("/api/elements", async (req, res, next) => {
    sensor.read(11, 592, (err, temperature, humidity) => {
     if(!err){
@@ -294,7 +296,24 @@ app.get("/api/elements", async (req, res, next) => {
         if(element.value === true){
           Klimatyzacja.writeSync(1)
         }else Klimatyzacja.writeSync(0)
-      }
+      }else if(element.elementType === 'Monitoring' && cameraProcess === null){
+        if(element.value === true ){
+          cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
+
+          cameraProcess.stdout.on('data', (data) => {
+            console.log(`stdout: ${data}`);
+          });
+          
+          cameraProcess.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+          });
+          
+          cameraProcess.on('close', (code) => {
+            console.log(`Python process exited with code ${code}`);
+            cameraProcess = null;
+          });
+        }
+       }
       
     })
     res.status(200).json({
@@ -304,8 +323,6 @@ app.get("/api/elements", async (req, res, next) => {
       });
       
 });
-
-  
 
   app.get("/api/elements/elementsType/:type", async (req, res, next) => {
     elem.find({ elementType:req.params.type}).toArray().then(elements=>{
@@ -326,8 +343,6 @@ app.get("/api/elements", async (req, res, next) => {
     })
 
     
-    
-
 app.put("/api/elements/:id", (req, res, next) => {
   let previousValue;
   const { value, userId } = req.body; // Nowy stan urz�dzenia
@@ -369,7 +384,27 @@ app.put("/api/elements/:id", (req, res, next) => {
              spawn('python',["server/stepperEngine.py", true]);
            }else if(elem.value === false && elem.value !== previousValue) {
              spawn('python',["server/stepperEngine.py", false]);
-         }}
+         }}else if(elem.elementType === 'Monitoring'){
+          if(elem.value === true && elem.value !== previousValue && cameraProcess === null){
+            cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
+
+            cameraProcess.stdout.on('data', (data) => {
+              console.log(`stdout: ${data}`);
+            });
+            
+            cameraProcess.stderr.on('data', (data) => {
+              console.error(`stderr: ${data}`);
+            });
+            
+            cameraProcess.on('close', (code) => {
+              console.log(`Python process exited with code ${code}`);
+              cameraProcess = null;
+            });
+          }else if(cameraProcess !== null){
+            cameraProcess.kill();
+            cameraProcess = null;
+          }
+         }
          logUserActivity(userId, deviceId, value);
           })
         res.status(200).json();
@@ -587,7 +622,7 @@ app.put("/api/elements/:id", (req, res, next) => {
                   const randomHour = randomDate.getHours();
                   let simulatedState = false;
       
-                  // Specjalne zachowania zale�ne od typu urz�dzenia i lokalizacji
+                  // Specjalne zachowania zale�ne od typu urz�dzenia i lokalizacjisss
                   switch (element.elementType) {
                       case "Rolety":
                           if (element.elementPosition === "Kuchnia") {
@@ -697,7 +732,7 @@ app.put("/api/elements/:id", (req, res, next) => {
           if(prediction === 1)spawn('python',["server/stepperEngine.py", true]);
           else if(prediction === 0)spawn('python',["server/stepperEngine.py", false]);
         }
-
+        
 
 
         await elem.updateOne(
@@ -705,7 +740,7 @@ app.put("/api/elements/:id", (req, res, next) => {
           { $set: { value: prediction === 1 } }
         );
     
-        // console.log(`Updated device ${deviceId} to ${prediction === 1 ? 'ON' : 'OFF'}`);
+        console.log(`Updated device ${deviceId} to ${prediction === 1 ? 'ON' : 'OFF'}`);
       });
       pythonProcess.on('error', (error) => {
         console.error(`Wyst�pi� b��d: ${error.message}`);
@@ -715,7 +750,10 @@ app.put("/api/elements/:id", (req, res, next) => {
       });
     };
     // Cykliczne sprawdzanie i aktualizacja stan�w urz�dze� co 2 minuty
-    setInterval(updateDeviceStatesForUsersWithAIEnabled, 30000);
+    // setInterval(updateDeviceStatesForUsersWithAIEnabled, 600000);
+
+
+
   app.get('/', (req, res) => {
     res.send({hello: 'world'});
 });

@@ -1,0 +1,30 @@
+INFO:picamera2.picamera2:Initialization successful.
+INFO:picamera2.picamera2:Camera now open.
+DEBUG:picamera2.picamera2:<libcamera._libcamera.CameraManager object at 0x7ffebe16e7b0>
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.137.78:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:192.168.137.1 - - [04/Apr/2024 21:43:50] "[35m[1mGET /video_feed HTTP/1.1[0m" 500 -
+ERROR:werkzeug:Error on request:
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/werkzeug/serving.py", line 335, in run_wsgi
+    execute(self.server.app)
+  File "/usr/lib/python3/dist-packages/werkzeug/serving.py", line 324, in execute
+    for data in application_iter:
+  File "/usr/lib/python3/dist-packages/werkzeug/wsgi.py", line 500, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/werkzeug/wrappers/response.py", line 50, in _iter_encoded
+    for item in iterable:
+  File "<string>", line 16, in generate_frames
+  File "/usr/lib/python3/dist-packages/picamera2/encoders/jpeg_encoder.py", line 30, in __init__
+    super().__init__(num_threads=num_threads)
+  File "/usr/lib/python3/dist-packages/picamera2/encoders/multi_encoder.py", line 28, in __init__
+    self.threads = ThreadPoolExecutor(num_threads)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/concurrent/futures/thread.py", line 143, in __init__
+    if max_workers <= 0:
+       ^^^^^^^^^^^^^^^^^
+TypeError: '<=' not supported between instances of 'Picamera2' and 'int'
