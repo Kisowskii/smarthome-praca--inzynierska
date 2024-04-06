@@ -42,42 +42,51 @@ export class AuthService {
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
-
   login(login: string, password: string) {
     const user: Login = {
       login: login,
       password: password,
     };
-
-      this.http
-        .post<{ token: string; id: string }>(
-          'http://192.168.137.78:3000/api/login',
-          user
-        )
-        .subscribe((response) => {
-          const token = response.token;
-          const id = response.id
-          // const id = response.id;
-          this.token = token;
-          localStorage.setItem('authToken', token);
-          localStorage.setItem('userId', id);
-          if (token) {
-            this.isAuthenticated = true;
-            this.authStatusListener.next(true);
-            this.router.navigate(['/menu']);
-          }
-        });
-    }
+  
+    this.http
+      .post<{ token: string; id: string }>(
+        'http://192.168.137.78:3000/api/login',
+        user
+      )
+      .subscribe((response) => {
+        const token = response.token;
+        const id = response.id;
+        this.token = token;
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userId', id);
+        const now = new Date();
+        const expirationDate = new Date(now.getTime() + 1800000); // 30 minut
+        localStorage.setItem('expiration', expirationDate.toISOString());
+        if (token) {
+          this.isAuthenticated = true;
+          this.authStatusListener.next(true);
+          this.router.navigate(['/menu']);
+          this.setAuthTimer(1800000); // Ustawienie timera na 30 minut
+        }
+      });
+  }
 
     autoAuthUser() {
       const authToken = localStorage.getItem('authToken');
-      if (!authToken) {
+      const expirationDate = localStorage.getItem('expiration');
+      if (!authToken || !expirationDate) {
         return;
       }
-      this.token = authToken;
-      this.isAuthenticated = true;
-      this.authStatusListener.next(true);
-      // Możesz tutaj również ustawić timer wygaśnięcia tokenu, jeśli jest dostępny
+      const now = new Date();
+      const expiresIn = new Date(expirationDate).getTime() - now.getTime();
+      if (expiresIn > 0) {
+        this.token = authToken;
+        this.isAuthenticated = true;
+        this.authStatusListener.next(true);
+        this.setAuthTimer(expiresIn);
+      } else {
+        this.logout(); // Wyloguj, jeśli token wygasł
+      }
     }
 
   logout() {
@@ -85,11 +94,20 @@ export class AuthService {
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
     localStorage.removeItem('authToken'); // Usuń token
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('expiration'); // Usuwanie daty wygaśnięcia
     this.router.navigate(['/']);
   }
 
   createUser(login: string, password: string, role: string): Observable<any> {
   const user = { login, password, role };
   return this.http.post<{ message: string }>('http://192.168.137.78:3000/api/users/add', user);
+}
+
+private setAuthTimer(duration: number) {
+  setTimeout(() => {
+    this.logout();
+  }, duration);
 }
   }
