@@ -298,7 +298,7 @@ app.get("/api/elements", async (req, res, next) => {
         }else Klimatyzacja.writeSync(0)
       }else if(element.elementType === 'Monitoring' && cameraProcess === null){
         if(element.value === true ){
-          cameraProcess = spawn('server/.venv/bin/python3', ['server/camera_stream.py']);
+          cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
 
           cameraProcess.stdout.on('data', (data) => {
             console.log(`stdout: ${data}`);
@@ -386,7 +386,7 @@ app.put("/api/elements/:id", (req, res, next) => {
              spawn('python',["server/stepperEngine.py", false]);
          }}else if(elem.elementType === 'Monitoring'){
           if(elem.value === true && elem.value !== previousValue && cameraProcess === null){
-            cameraProcess = spawn('server/.venv/bin/python3', ['server/camera_stream.py']);
+            cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
 
             cameraProcess.stdout.on('data', (data) => {
               console.log(`stdout: ${data}`);
@@ -412,7 +412,7 @@ app.put("/api/elements/:id", (req, res, next) => {
   });
 
   app.get('/api/ml/update', (req, res) => {
-    const csvCreateProcess = spawn('server/.venv/bin/python3', ['server/csvCreate.py']);
+    const csvCreateProcess = spawn('./server/.venv/bin/python3', ['server/csvCreate.py']);
 
     csvCreateProcess.stdout.on('data', (data) => {
         console.log(`stdout from csvCreate.py: ${data}`);
@@ -426,7 +426,7 @@ app.put("/api/elements/:id", (req, res, next) => {
         console.log(`csvCreate.py exited with code ${code}`);
 
         if (code === 0) {
-            const jsonForDiagram = spawn('server/.venv/bin/python3', ['server/jsonForDiagram.py']);
+            const jsonForDiagram = spawn('./server/.venv/bin/python3', ['server/jsonForDiagram.py']);
 
             jsonForDiagram.stdout.on('data', (data) => {
                 console.log(`stdout from jsonForDiagram.py: ${data}`);
@@ -681,7 +681,7 @@ app.put("/api/elements/:id", (req, res, next) => {
     // Funkcja do aktualizacji stan�w urz�dze�
     const generateAiModels = async () => {
       
-        const pythonProcess = spawn('server/.venv/bin/python3', ['server/generate-model.py']);
+        const pythonProcess = spawn('./server/.venv/bin/python3', ['server/generate-model.py']);
         pythonProcess.stdout.on('data', (data) => {
           console.log(`stdout: ${data}`);
         });
@@ -708,7 +708,7 @@ app.put("/api/elements/:id", (req, res, next) => {
       const is_weekend = [5, 6].includes(current_day_of_week) ? 1 : 0;
       // Uruchom skrypt Pythona do predykcji stanu urz�dzenia
       // const pythonProcess = spawn('./server/.venv/bin/python', ['server/predictState.py', userId, deviceId, current_hour, current_day_of_week, is_weekend], { stdio: [null, { highWaterMark: 1024 * 1024 }, { highWaterMark: 1024 * 1024 }] });
-      const pythonProcess = await spawn('server/.venv/bin/python3', ['server/predictState.py', userId, deviceId, current_hour, current_day_of_week, is_weekend], {
+      const pythonProcess = await spawn('./server/.venv/bin/python3', ['server/predictState.py', userId, deviceId, current_hour, current_day_of_week, is_weekend], {
         stdio: ['pipe', 'pipe', 'pipe'] // Domy�lnie dla stdio jest 'pipe', co oznacza, �e Node.js b�dzie buforowa� dane wej�ciowe/wyj�ciowe. Ustawienie na 'inherit' u�ywa strumieni rodzica.
       });
       if (!pythonProcess) {
