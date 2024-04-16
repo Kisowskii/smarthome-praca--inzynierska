@@ -726,13 +726,15 @@ app.put("/api/elements/:id", (req, res, next) => {
     const updateDeviceStatesForUsersWithAIEnabled = async () => {
       // Znajd� u�ytkownik�w z w��czon� sztuczn� inteligencj�
       const userSetting = await setting.findOne({ name: 'aiEnabled', enabled: true });
-        const userId = userSetting.userId;
-        // Dla ka�dego u�ytkownika znajd� urz�dzenia, kt�re mog� by� sterowane
-        const devices = await elem.find({ gpio: { $in: [588, 598, 593, 24, 583] } }).toArray();
-    
-        // Dla ka�dego urz�dzenia wykonaj predykcj� i zaktualizuj stan
-        for (const device of devices) {
-          await updateDeviceState(userId, device._id.toString());
+        if(userSetting){
+          const userId = userSetting.userId;
+          // Dla ka�dego u�ytkownika znajd� urz�dzenia, kt�re mog� by� sterowane
+          const devices = await elem.find({ gpio: { $in: [588, 598, 593, 24, 583] } }).toArray();
+      
+          // Dla ka�dego urz�dzenia wykonaj predykcj� i zaktualizuj stan
+          for (const device of devices) {
+            await updateDeviceState(userId, device._id.toString());
+          }
         }
     };
     
@@ -784,7 +786,7 @@ app.put("/api/elements/:id", (req, res, next) => {
       });
     };
     // Cykliczne sprawdzanie i aktualizacja stan�w urz�dze� co 2 minuty
-    // setInterval(updateDeviceStatesForUsersWithAIEnabled, 600000);
+    // setInterval(updateDeviceStatesForUsersWithAIEnabled, 24000);
 
 
 
