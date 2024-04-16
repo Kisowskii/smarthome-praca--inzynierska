@@ -9,12 +9,7 @@
   background-color: white;
   border-radius: 8px;
   margin-top: 5%;
-  .back-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 44px;
-  }
+
   form {
       width: 100%;
   }
@@ -101,6 +96,16 @@
 
 }
 
+.top-panel{
+  padding: 8px;
+  background-color: #0061A3;
+  font-family: 'Roboto';
+  font-style: normal;
+  color: #FFFFFF;
+  .back-button {
+    display: flex;
+  }
+}
 // Reusing wcag-options style for additional accessibility options
 .wcag-options {
   margin-top: 20px;

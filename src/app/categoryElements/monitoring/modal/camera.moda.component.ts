@@ -4,14 +4,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-video-modal',
   template: `
-    <div class="dialog-header">
+    <div class="dialog-header dark-background">
     <h2 >Monitoring podgląd</h2>
-    <button mat-icon-button class="close-button" mat-dialog-close>
-      <mat-icon>close</mat-icon>
+    <button alt="Zamknij okno modalne" mat-icon-button class="close-button " mat-dialog-close>
+      <mat-icon aria-label="strzałka wstecz" >close</mat-icon>
     </button>
   </div>
-    <div class="video-container">
-      <img #videoPlayer alt="Video Stream" src="http://192.168.137.78:5000/video_feed">
+    <div class="video-container ">
+      <img #videoPlayer alt="Video Stream" src="http://192.168.0.16:5000/video_feed">
     </div>
   `,
   styleUrls: ['./camera.modal.component.scss']

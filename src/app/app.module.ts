@@ -37,6 +37,7 @@ import { AuthModule } from './auth/auth.module';
 import { ChartsDialogComponent } from './main-menu-page/modals/chart-dialog.component';
 import { VideoModalComponent } from './categoryElements/monitoring/modal/camera.moda.component';
 import { FaceIdModalComponent } from './main-menu-page/modals/faceIdGenerator.modal.component';
+import { LockComponent } from './categoryElements/lock/lock.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { FaceIdModalComponent } from './main-menu-page/modals/faceIdGenerator.mo
     LivingRoomComponent,
     OutsideComponent,
     BedroomComponent,
+    LockComponent,
     ChartsDialogComponent,
     VideoModalComponent,
     FaceIdModalComponent
@@ -78,6 +80,7 @@ import { FaceIdModalComponent } from './main-menu-page/modals/faceIdGenerator.mo
   
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    
   ],
   bootstrap: [AppComponent]
 })

@@ -24,11 +24,11 @@
   .video-container {
     text-align: center; /* Centruje obraz wideo */
     img {
-      max-width: calc(100% - 32px);
+      max-width: 1000px;
       max-height: 100%;
-      width: 100%;
+      width: calc(100% - 16px);
       @media(max-width:769px) {
-        max-width: 100%;
+        width: 100%;
       }
     }
   }

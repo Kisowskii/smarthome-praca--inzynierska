@@ -1,10 +1,10 @@
 <head><link rel="shortcut icon" href="#"></head>
 <main>
-  <div class="wcag-options"> 
-    <button title="domyślny tekst" class="small">A</button>
-    <button title="powiększ tekst" class="medium">A</button>
-    <button title="powiększ tekst" class="large">A</button>
-    <div role="button" ngClass="contrast-mode" class="contrast-icon-container" tabindex="0"><svg role="button" aria-labelledby="contastTitle" width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false"><title id="contastTitle">Narzędzia ułatwiania dostępu - odwróć kontrast</title><g id="Projekt" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd"><g id="contrast" transform="translate(-1474.000000, -40.000000)"><path d="M1486.5,47 L1475.5,47 C1475.5,43.9624339 1477.96243,41.5 1481,41.5 C1484.03757,41.5 1486.5,43.9624339 1486.5,47 Z M1481,54 C1477.13401,54 1474,50.8659932 1474,47 C1474,43.1340068 1477.13401,40 1481,40 C1484.86599,40 1488,43.1340068 1488,47 C1488,50.8659932 1484.86599,54 1481,54 Z" id="Oval-2-Copy" transform="translate(1481.000000, 47.000000) rotate(90.000000) translate(-1481.000000, -47.000000) "></path></g></g></svg></div>
+  <div class="wcag-options dark-background"> 
+    <button (click)="changeFontSize('small')" title="domyślny tekst" class="small dark-background">A</button>
+    <button (click)="changeFontSize('medium')" title="powiększ tekst" class="medium dark-background">A</button>
+    <button (click)="changeFontSize('large')" title="powiększ tekst" class="large dark-background">A</button>
+    <div role="button" (click)="toggleContrast()" ngClass="contrast-mode" class="contrast-icon-container" tabindex="0"><svg role="button" aria-labelledby="contastTitle" width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false"><title id="contastTitle">Narzędzia ułatwiania dostępu - odwróć kontrast</title><g id="Projekt" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd"><g id="contrast" transform="translate(-1474.000000, -40.000000)"><path d="M1486.5,47 L1475.5,47 C1475.5,43.9624339 1477.96243,41.5 1481,41.5 C1484.03757,41.5 1486.5,43.9624339 1486.5,47 Z M1481,54 C1477.13401,54 1474,50.8659932 1474,47 C1474,43.1340068 1477.13401,40 1481,40 C1484.86599,40 1488,43.1340068 1488,47 C1488,50.8659932 1484.86599,54 1481,54 Z" id="Oval-2-Copy" transform="translate(1481.000000, 47.000000) rotate(90.000000) translate(-1481.000000, -47.000000) "></path></g></g></svg></div>
   </div>
   <router-outlet></router-outlet>
 </main>

@@ -11,7 +11,7 @@ export class CategoryElementsService {
 
   constructor(private http: HttpClient) {}
   // private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
-  private baseUrl = 'http://192.168.137.78:3000/api';
+  private baseUrl = 'http://192.168.0.16:3000/api';
 
 
 getTokenFromStorage(): string | null {
@@ -149,7 +149,7 @@ getAllElements(): Observable<any[]> {
   }
   generateFaceIdModel(): Observable<any> {
     const userId = localStorage.getItem('userId');
-    return this.http.post<{ message: string }>(`http://192.168.137.78:5000/start_face_collection`, { person_id: userId, duration: 10 }, {
+    return this.http.post<{ message: string }>(`http://192.168.0.16:5000/start_face_collection`, { person_id: userId, duration: 10 }, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

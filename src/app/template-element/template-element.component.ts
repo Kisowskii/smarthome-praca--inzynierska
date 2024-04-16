@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { CategoryElementsService } from '../categoryElements/category-elements.service';
@@ -8,14 +8,14 @@ import { VideoModalComponent } from '../categoryElements/monitoring/modal/camera
   selector: 'app-template-element',
   template: `
     <div class="template-container">
-      <div class="top-panel">
+      <div class="top-panel dark-background">
         <div class="first-row">
-          <button aria-label="Strzałka wstecz" class="arrow-button" role="button" routerLink="..">
-            <img class='arrow' src="../../assets/Strzalka-wstecz.svg">
+          <button  alt="Powrót do menu głównego" class="arrow-button dark-background" role="button" routerLink="..">
+            <img class='arrow' aria-label="Strzałka wstecz" src="../../assets/Strzalka-wstecz.svg">
           </button>
           <div class="title">{{ title }}</div>
         </div>
-        <div class="second-row" *ngIf="showOptionAutomaticElement" [ariaLabel]="">
+        <div class="second-row dark-background" *ngIf="showOptionAutomaticElement" [ariaLabel]="">
           <mat-slide-toggle color="primary"  
                             [checked]="automationChecked"
                             (change)="onChangeSwitcherInformations()"
@@ -25,11 +25,14 @@ import { VideoModalComponent } from '../categoryElements/monitoring/modal/camera
       </div>
       <div class="content-panel" *ngFor="let element of elements">
         <div class="information-panel">
-          <div class="icon-container"><img [src]="element.icon"></div> 
+          <div class="icon-container">
+            <img [src]="element.icon" *ngIf="type" alt="Ikona + {{element.elementPosition}}">
+            <img [src]="element.icon" *ngIf="position" alt="Ikona + {{element.buttonText}}">
+        </div> 
           <div class="title-container" *ngIf="type">{{ element.elementPosition }}</div>
           <div class="title-container" *ngIf="position">{{ element.buttonText }}</div>
-          <div class='monitoring' role="button" *ngIf="title=='Monitoring' && element.value === true">
-            <button mat-raised-button color="primary" (click)="openCameraPreview()">Podgląd</button>
+          <div class='monitoring ' role="button" *ngIf="element.elementType=='Monitoring' && element.value === true">
+            <button mat-raised-button color="primary" class="dark-fill-button" (click)="openCameraPreview()">Podgląd</button>
           </div>
           <div class="value-container" *ngIf="onCheckValueIsStringOrNumer(element.value)">{{ element.value }}</div>
           <div class="value-container" *ngIf="onCheckValueIsBoolean(element.value)">
@@ -57,7 +60,7 @@ export class TemplateElementComponent implements OnInit, OnDestroy {
   automationChecked: boolean = true;
   elementSub: Subscription;
 
-  constructor(public elementService: CategoryElementsService, private dialog: MatDialog) {}
+  constructor(public elementService: CategoryElementsService, private dialog: MatDialog, private renderer: Renderer2, private el: ElementRef) {}
 
   ngOnInit(): void {
     if (this.type) {
@@ -103,7 +106,14 @@ export class TemplateElementComponent implements OnInit, OnDestroy {
       height: '100%',
       maxWidth: '100%',
       autoFocus: true,
-      data: {}
+      data: {},
+      ariaLabel:'Okno modalne do podglądu kamery'
     });
+    const appRoot = this.el.nativeElement.closest('app-root');
+    
+    if (appRoot) {
+      this.renderer.removeAttribute(appRoot, 'aria-hidden');
+      this.renderer.removeAttribute(appRoot, 'tabindex');
+    }
   }
 }

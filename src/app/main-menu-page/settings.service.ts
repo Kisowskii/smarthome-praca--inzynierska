@@ -9,22 +9,15 @@ export class SettingsService {
 
   constructor(private http: HttpClient) {}
   // private baseUrl = 'https://api.apismarthome-wisowski-konrad.com/api';
-  private baseUrl = 'http://192.168.137.78:3000/api';
+  private baseUrl = 'http://192.168.0.16:3000/api';
 
   fetchChartData() {
     return this.http.get<any>(`${this.baseUrl}/chart-data`);
   } 
 
     
-  updateAiModel() {
-    this.http.get(`${this.baseUrl}/ml/update`).subscribe({
-      next: (response) => {
-        console.log('Model AI został zaktualizowany', response);
-      },
-      error: (error) => {
-        console.error('Wystąpił błąd podczas aktualizacji modelu AI', error);
-      }
-    });
+  updateAiModel(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/ml/update`);
   }
 
   updateSetting(userId: string, settingName: string, enabled: boolean): Observable<any> {

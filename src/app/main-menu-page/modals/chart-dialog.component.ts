@@ -5,10 +5,10 @@ import { CategoryElementsService } from 'src/app/categoryElements/category-eleme
 @Component({
   selector: 'app-charts-dialog',
   template: `
-  <div class="dialog-header">
-    <h2 mat-dialog-title>Wykresy aktywności</h2>
+  <div class="dialog-header dark-background">
+    <h2>Wykresy aktywności</h2>
     <button mat-icon-button class="close-button" mat-dialog-close>
-      <mat-icon>close</mat-icon>
+      <mat-icon aria-label="Zamknij okno modalne">close</mat-icon>
     </button>
   </div>
   <mat-dialog-content>

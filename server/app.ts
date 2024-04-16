@@ -11,6 +11,7 @@ const LedKuchnia = new Gpio(588, 'out')
 const LedSypialnia = new Gpio(598, 'out')
 const LedLazienka = new Gpio(593, 'out')
 const Klimatyzacja = new Gpio(583, 'out')
+const Zamek = new Gpio(403, 'out')
 const CzujnikKuchnia = new Gpio(576, 'in', 'both')
 const CzujnikSilnik = new Gpio(587, 'in', 'both')
 const CzujnikSypialnia= new Gpio(577, 'in', 'both')
@@ -246,7 +247,23 @@ elem.updateOne(
     console.error('There was an error', err); //output error message to console
   return;
 }
-//console.log("RUCH RUCH UCH" + value);
+  console.log("RUCH RUCH UCH" + value);
+  if(cameraProcess === null  ){
+    cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
+
+    cameraProcess.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+    });
+    
+    cameraProcess.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+    
+    cameraProcess.on('close', (code) => {
+      console.log(`Python process exited with code ${code}`);
+      cameraProcess = null;
+    });
+  }
 })
 
 CzujnikZalania.watch((err, value)=>{
@@ -296,6 +313,10 @@ app.get("/api/elements", async (req, res, next) => {
         if(element.value === true){
           Klimatyzacja.writeSync(1)
         }else Klimatyzacja.writeSync(0)
+      }else if (element.gpio === 403){
+        if(element.value === true){
+          Zamek.writeSync(1)
+        }else Zamek.writeSync(0)
       }else if(element.elementType === 'Monitoring' && cameraProcess === null){
         if(element.value === true ){
           cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
@@ -379,6 +400,10 @@ app.put("/api/elements/:id", (req, res, next) => {
             if(elem.value === true){
           Klimatyzacja.writeSync(1)
             }else Klimatyzacja.writeSync(0)
+          } else if (elem.gpio === 403){
+            if(elem.value === true){
+          Zamek.writeSync(1)
+            }else Zamek.writeSync(0)
           }else if(elem.gpio === 24){
            if(elem.value === true && elem.value !== previousValue){
              spawn('python',["server/stepperEngine.py", true]);
@@ -555,6 +580,15 @@ app.put("/api/elements/:id", (req, res, next) => {
         automation:false,
         display:true
     },{
+      buttonText:"Zamek",
+      elementType:"Zamek",
+      elementPosition:"Na zewnatrz",
+      icon:"../../assets/Czujnik_Zalania.svg",
+      value:false,
+      gpio:583,
+      automation:false,
+      display:true
+  },{
         buttonText:req.body.buttonText,
         elementType:req.body.elementType,
         elementPosition:req.body.elementPosition,

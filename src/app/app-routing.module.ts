@@ -18,9 +18,12 @@ import { BathroomComponent } from './categoryElements/bathroom/bathroom.componen
 import { BedroomComponent } from './categoryElements/bedroom/bedroom.component';
 import { OutsideComponent } from './categoryElements/outside/outside.component';
 import { AuthGuard } from './auth/auth.guard';
+import { ChartsDialogComponent } from './main-menu-page/modals/chart-dialog.component';
 
 const appRoutes: Routes = [
   { path: '', component: StartingPageComponent },
+  { path: 'charts', component: ChartsDialogComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
+  { path: 'face-scanning', component: ChartsDialogComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu', component: MainMenuPageComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/types', component: MainMenuPageComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/oswietlenie', component: LightComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
