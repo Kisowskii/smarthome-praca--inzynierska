@@ -17,7 +17,10 @@ export class AuthService {
   private isAuthenticated = false;
   private authStatusListener = new Subject<boolean>();
   private medPath: any = '/';
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
     this.autoAuthUser();
   }
   // store the URL so we can redirect after logging in

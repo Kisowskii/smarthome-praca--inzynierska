@@ -51,7 +51,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./main-menu-page.component.scss'],
 })
 export class MainMenuPageComponent implements OnInit {
-  constructor(private renderer: Renderer2, public authService: AuthService, private router: Router, public settingsService: SettingsService, public dialog: MatDialog, private snackBar: MatSnackBar, private el: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    public authService: AuthService,
+    private router: Router,
+    public settingsService: SettingsService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private el: ElementRef,
+  ) {}
   checked;
   typeOfSwitherInformations: string = 'Wyświetl element według rozmieszczenia';
   menuType: string = '';

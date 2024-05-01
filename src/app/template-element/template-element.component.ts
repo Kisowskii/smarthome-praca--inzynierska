@@ -58,7 +58,12 @@ export class TemplateElementComponent implements OnInit, OnDestroy {
   automationChecked: boolean = true;
   elementSub: Subscription;
 
-  constructor(public elementService: CategoryElementsService, private dialog: MatDialog, private renderer: Renderer2, private el: ElementRef) {}
+  constructor(
+    public elementService: CategoryElementsService,
+    private dialog: MatDialog,
+    private renderer: Renderer2,
+    private el: ElementRef,
+  ) {}
 
   ngOnInit(): void {
     if (this.type) {

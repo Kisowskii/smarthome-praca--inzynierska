@@ -1,51 +1,50 @@
 .ngx-charts text {
-    fill: #6c707f; /* Twój kolor */
-  }
-
-  .mat-dialog-container {
-    max-width: none !important;
-    width: calc(100% - 32px) !important;
-    height: calc(100% - 32px) !important;
-    margin: 16px;
-    border-radius: 0;
-  }
-  
-  ngx-charts-bar-vertical {
-    width: 100%;
-    height: auto;
-  }
-  
-  .mat-dialog-content {
-    overflow-y: auto;
-  }
-  
-  mat-dialog-actions {
-    justify-content: flex-end;
-  }
-
-  .dialog-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .close-button {
-      margin: 12px 12px 0 0; 
-    }
-  }
-  .mat-mdc-dialog-content {
-    max-height: 100%;
+  fill: #6c707f; /* Twój kolor */
 }
 
+.mat-dialog-container {
+  max-width: none !important;
+  width: calc(100% - 32px) !important;
+  height: calc(100% - 32px) !important;
+  margin: 16px;
+  border-radius: 0;
+}
 
-  .dialog-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-    padding-left:16px;
-    padding-bottom: 8px;
-    background-color: #0061A3;
-    color: white;
-    .close-button {
-      margin: 12px 12px 0 0; 
-    }
+ngx-charts-bar-vertical {
+  width: 100%;
+  height: auto;
+}
+
+.mat-dialog-content {
+  overflow-y: auto;
+}
+
+mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .close-button {
+    margin: 12px 12px 0 0;
+  }
+}
+.mat-mdc-dialog-content {
+  max-height: 100%;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-left: 16px;
+  padding-bottom: 8px;
+  background-color: #0061a3;
+  color: white;
+  .close-button {
+    margin: 12px 12px 0 0;
+  }
 }

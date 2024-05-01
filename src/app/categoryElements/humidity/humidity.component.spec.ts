@@ -8,9 +8,8 @@ describe('HumidityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HumidityComponent ]
-    })
-    .compileComponents();
+      declarations: [HumidityComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HumidityComponent);
     component = fixture.componentInstance;

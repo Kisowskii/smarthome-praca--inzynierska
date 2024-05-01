@@ -3,14 +3,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  padding-left:16px;
+  padding-left: 16px;
   padding-bottom: 8px;
-  background-color: #0061A3;
+  background-color: #0061a3;
   color: white;
   .close-button {
-    margin: 12px 12px 0 0; 
+    margin: 12px 12px 0 0;
   }
-
 }
 
 .close-button {
@@ -19,8 +18,8 @@
   cursor: pointer;
   font-size: 24px; /* Dostosuj rozmiar tekstu przycisku X */
   font-weight: bold;
-  .mat-icon{
-    color:white;
+  .mat-icon {
+    color: white;
   }
 }
 
@@ -30,29 +29,29 @@
     max-width: 1000px;
     max-height: 100%;
     width: calc(100% - 16px);
-    @media(max-width:769px) {
+    @media (max-width: 769px) {
       width: 100%;
     }
   }
 }
-  button {
-    width: 100%;
-    margin-top:8px;
-    font-size: 16px;
-    color: white;
-    background-color: #0061A3;
-    border: none;
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+button {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 16px;
+  color: white;
+  background-color: #0061a3;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 
-    &:hover {
-        background-color: darken(#0061A3, 10%);
+  &:hover {
+    background-color: darken(#0061a3, 10%);
+  }
+  &.mdc-icon-button {
+    mat-icon {
+      color: #0061a3; // Przykładowy kolor
     }
-    &.mdc-icon-button{
-      mat-icon {
-        color: #0061A3; // Przykładowy kolor
-      }
-    }
+  }
 }

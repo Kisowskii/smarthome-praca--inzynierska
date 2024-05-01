@@ -21,7 +21,10 @@ import { CategoryElementsService } from 'src/app/categoryElements/category-eleme
 export class FaceIdModalComponent implements OnInit, OnDestroy {
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLImageElement>;
 
-  constructor(private dialogRef: MatDialogRef<FaceIdModalComponent>, private categoryElementsService: CategoryElementsService) {}
+  constructor(
+    private dialogRef: MatDialogRef<FaceIdModalComponent>,
+    private categoryElementsService: CategoryElementsService,
+  ) {}
 
   ngOnInit(): void {
     console.log('Video streaming component initialized');

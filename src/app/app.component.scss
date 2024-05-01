@@ -1,39 +1,34 @@
-
-.wcag-options{
+.wcag-options {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 64px;
+  background-color: rgb(245, 245, 247);
+  color: #6c707f;
+  .contrast-icon-container {
     display: flex;
-    justify-content: flex-end;
-    padding: 0 64px;
-    background-color: rgb(245,245,247);
-    color: #6c707f;
-    .contrast-icon-container{
-        display: flex;
-        align-items: center;
-        svg{
-            padding: 0 4px;
-        }
+    align-items: center;
+    svg {
+      padding: 0 4px;
     }
+  }
 
- button{
+  button {
     margin-right: 8px;
     border: none;
-    background-color: rgb(245,245,247);
+    background-color: rgb(245, 245, 247);
 
-    &.small{
-        font-size: 0.8rem;
-        color: #6c707f;
+    &.small {
+      font-size: 0.8rem;
+      color: #6c707f;
     }
 
-    &.medium{
-        font-size: 0.9rem;
-        color: #6c707f;
+    &.medium {
+      font-size: 0.9rem;
+      color: #6c707f;
     }
 
-    &.large{
-        font-size: 1rem;
+    &.large {
+      font-size: 1rem;
     }
- }
-
- }
-
- 
-  
+  }
+}

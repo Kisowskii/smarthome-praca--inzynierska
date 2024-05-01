@@ -8,9 +8,8 @@ describe('FloodComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FloodComponent ]
-    })
-    .compileComponents();
+      declarations: [FloodComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FloodComponent);
     component = fixture.componentInstance;

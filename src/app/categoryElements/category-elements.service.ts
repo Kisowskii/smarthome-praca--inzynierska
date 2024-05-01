@@ -31,7 +31,7 @@ export class CategoryElementsService {
           value: element.value,
           automation: element.automation,
         }));
-      })
+      }),
     );
   }
 
@@ -51,7 +51,7 @@ export class CategoryElementsService {
               automation: element.automation,
             };
           });
-        })
+        }),
       )
       .subscribe((transformationsElements) => {
         this.elements = transformationsElements;
@@ -75,7 +75,7 @@ export class CategoryElementsService {
               automation: element.automation,
             };
           });
-        })
+        }),
       )
       .subscribe((transformationsElements) => {
         this.elements = transformationsElements;
@@ -131,7 +131,7 @@ export class CategoryElementsService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         }),
-      }
+      },
     );
   }
 }

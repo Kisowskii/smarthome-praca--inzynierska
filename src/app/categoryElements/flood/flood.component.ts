@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-flood',
   template: `
-  <app-template-element title="Wykrycie zalania" [type]="'Zalanie'" [showOptionAutomaticElement]="false"></app-template-element>
+    <app-template-element title="Wykrycie zalania" [type]="'Zalanie'" [showOptionAutomaticElement]="false"></app-template-element>
   `,
 })
-export class FloodComponent {
-}
+export class FloodComponent {}

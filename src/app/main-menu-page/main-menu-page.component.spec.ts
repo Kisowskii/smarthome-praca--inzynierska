@@ -8,9 +8,8 @@ describe('MainMenuPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainMenuPageComponent ]
-    })
-    .compileComponents();
+      declarations: [MainMenuPageComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MainMenuPageComponent);
     component = fixture.componentInstance;

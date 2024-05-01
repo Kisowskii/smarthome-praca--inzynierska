@@ -18,7 +18,7 @@ import { AuthService } from '../auth.service';
           <mat-label class="text-dark">Twoje hasło</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" name="password" ngModel required minlength="3" #passwordInput="ngModel" />
           <button class="light-background" mat-icon-button matSuffix (click)="toggleHide()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-            <mat-icon class="light-background">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-icon class="light-background">{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <mat-error class="text-dark" *ngIf="passwordInput.invalid">Proszę podać hasło</mat-error>
         </mat-form-field>
@@ -33,7 +33,10 @@ export class LoginComponent {
   isLoading = false;
   message: string;
   hide = true;
-  constructor(public authService: AuthService, public router: Router) {}
+  constructor(
+    public authService: AuthService,
+    public router: Router,
+  ) {}
 
   login(form: NgForm) {
     if (form.invalid) {

@@ -1,6 +1,6 @@
-const MongoClient = require("mongodb").MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 
-const url = "mongodb://127.0.0.1:27017/SmartHome/";
+const url = 'mongodb://127.0.0.1:27017/SmartHome/';
 
 const client = new MongoClient(url, {
   useUnifiedTopology: true,
@@ -8,9 +8,9 @@ const client = new MongoClient(url, {
 });
 
 client.connect((err, res) => {
-  console.log("Connect success");
+  console.log('Connect success');
 });
 
-const database = client.db("SmartHome");
+const database = client.db('SmartHome');
 
 module.exports = database;
