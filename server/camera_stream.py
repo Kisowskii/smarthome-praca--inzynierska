@@ -9,6 +9,7 @@ import pickle
 import threading
 from flask_cors import CORS
 import logging
+import requests
 
 # Setup logging
 logging.basicConfig(level=logging.DEBUG)
@@ -33,6 +34,13 @@ except FileNotFoundError:
     known_face_encodings = []
     known_face_names = []
 
+
+def notify_face_recognized(name):
+    url = 'http://localhost:3000/api/face_recognized'
+    data = {'recognized': True} if name != "Unknown" else {'recognized': False}
+    response = requests.post(url, json=data)
+    print("Status odpowiedzi:", response.status_code)
+
 def recognize_faces_in_background():
     """Continuously checks for known faces in the video feed."""
     while True:
@@ -51,6 +59,7 @@ def recognize_faces_in_background():
 
             if name != "Unknown":
                 logging.debug(f'Witaj, {name}!')
+                notify_face_recognized(name)
 
         time.sleep(3)  # Check every 3 seconds
 
