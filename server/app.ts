@@ -24,6 +24,7 @@ const sensor = require('node-dht-sensor');
 const spawn = require('child_process').spawn;
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const findProcess = require('find-process');
 require('dotenv').config();
 // Reszta Twojego kodu serwera
 
@@ -247,24 +248,33 @@ CzujnikDymu.watch((err, value) => {
 });
 
 let cameraTimeout = null; // Zmienna dla timera
+async function cameraProcessF(){
+  const processName = 'camera_stream.py';  // Nazwa skryptu Pythona
+  const processes = await findProcess('name', processName);
+  console.log(processes)
 
-CzujnikRuchu.watch((err, value) => {
+  return processes
+}
+
+CzujnikRuchu.watch(async (err, value) => {
   if (err) {
-    // Je�li wyst�pi b��d
-    console.error('There was an error', err); // Wy�wietl komunikat o b��dzie w konsoli
+    console.error('There was an error', err);
     return;
   }
-  elem.findOne({ gpio:579 }).then((element) => {
-    if(element && element.automation){
+  try {
+    const processes = await cameraProcessF(); // Oczekiwanie na wynik funkcji asynchronicznej
+    console.log(processes);
+
+    const element = await elem.findOne({ gpio: 579 });
+    if (element && element.automation) {
       if (value === 1) {
         if (cameraTimeout) {
-          // Je�li timer ju� istnieje, zresetuj go
           clearTimeout(cameraTimeout);
         }
 
         // Uruchom proces kamery, je�li nie jest ju� uruchomiony
-        if (cameraProcess !== null) {
-          console.log(cameraProcess)
+        if (cameraProcess === null && processes.length === 0) { // Dodano sprawdzenie czy procesy s� ju� uruchomione
+          console.log('Uruchamianie procesu kamery');
           cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
 
           cameraProcess.stdout.on('data', (data) => {
@@ -296,8 +306,11 @@ CzujnikRuchu.watch((err, value) => {
         }
       }
     }
-  });
+  } catch (error) {
+    console.error('Error processing motion detection:', error);
+  }
 });
+
 
 CzujnikZalania.watch((err, value) => {
   if (err) {
