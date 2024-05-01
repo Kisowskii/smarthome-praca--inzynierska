@@ -173,8 +173,6 @@ CzujnikSilnik.watch((err, value) => {
 
   elem.findOne({ gpio: 24 }).then((element) => {
     if (element && element.automation) {
-      console.log(element.automation);
-
       if (value === 1) {
         spawn('python', ['server/stepperEngine.py', true]);
       } else {
@@ -251,8 +249,6 @@ let cameraTimeout = null; // Zmienna dla timera
 async function cameraProcessF(){
   const processName = 'camera_stream.py';  // Nazwa skryptu Pythona
   const processes = await findProcess('name', processName);
-  console.log(processes)
-
   return processes
 }
 
@@ -263,8 +259,6 @@ CzujnikRuchu.watch(async (err, value) => {
   }
   try {
     const processes = await cameraProcessF(); // Oczekiwanie na wynik funkcji asynchronicznej
-    console.log(processes);
-
     const element = await elem.findOne({ gpio: 579 });
     if (element && element.automation) {
       if (value === 1) {
@@ -444,12 +438,10 @@ app.put('/api/elements/:id', (req, res, next) => {
           } else LedLazienka.writeSync(0);
         } else if (elem.gpio === 583) {
           if (elem.value === true) {
-            console.log(Klimatyzacja);
             Klimatyzacja.writeSync(1);
           } else Klimatyzacja.writeSync(0);
         } else if (elem.gpio === 579) {
           if (elem.value === true) {
-            console.log(Zamek);
             Zamek.writeSync(1);
           } else Zamek.writeSync(0);
         } else if (elem.gpio === 24) {
