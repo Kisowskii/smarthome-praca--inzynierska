@@ -139,24 +139,28 @@ app.get('/api/settings/:userId', async (req, res) => {
 });
 
 app.post('/api/face_recognized', (req, res) => {
-  const { recognized } = req.body;
+  elem.findOne({ gpio:579 }).then((element) => {
+    if(element && element.automation){
+      const { recognized } = req.body;
 
-  if (cameraProcess === null) {
-    return res.status(400).json({ message: 'Kamera nie jest aktywna. Rozpoznanie twarzy niemo�liwe.' });
-  }
-  console.log(recognized);
-  if (recognized) {
-    console.log('Twarz rozpoznana, odblokowuj� zamek.');
-    Zamek.writeSync(1); // Ustawienie pinu Zamka na warto�� wysok� (zamek otwarty)
+      if (cameraProcess === null) {
+        return res.status(400).json({ message: 'Kamera nie jest aktywna. Rozpoznanie twarzy niemo�liwe.' });
+      }
+      console.log(recognized);
+      if (recognized) {
+        console.log('Twarz rozpoznana, odblokowuj� zamek.');
+        Zamek.writeSync(1); // Ustawienie pinu Zamka na warto�� wysok� (zamek otwarty)
 
-    // Ustawienie timera, aby zamkn�� zamek po 5 sekundach
-    setTimeout(() => {
-      Zamek.writeSync(0); // Ustawienie pinu Zamka na warto�� nisk� (zamek zamkni�ty)
-      console.log('Zamek zablokowany.');
-    }, 5000); // 5000 milisekund = 5 sekund
-  }
+        // Ustawienie timera, aby zamkn�� zamek po 5 sekundach
+        setTimeout(() => {
+          Zamek.writeSync(0); // Ustawienie pinu Zamka na warto�� nisk� (zamek zamkni�ty)
+          console.log('Zamek zablokowany.');
+        }, 5000); // 5000 milisekund = 5 sekund
+      }
 
-  res.status(200).json({ message: 'Rozpoznanie twarzy odebrane i obs�u�one' });
+      res.status(200).json({ message: 'Rozpoznanie twarzy odebrane i obs�u�one' });
+    }
+  })
 });
 
 CzujnikSilnik.watch((err, value) => {
@@ -262,6 +266,7 @@ CzujnikRuchu.watch((err, value) => {
 
         // Uruchom proces kamery, je�li nie jest ju� uruchomiony
         if (cameraProcess === null) {
+          console.log(cameraProcess)
           cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
 
           cameraProcess.stdout.on('data', (data) => {
@@ -819,7 +824,7 @@ const updateDeviceState = async (userId, deviceId) => {
   });
 };
 // Cykliczne sprawdzanie i aktualizacja stan�w urz�dze� co 2 minuty
-// setInterval(updateDeviceStatesForUsersWithAIEnabled, 24000);
+setInterval(updateDeviceStatesForUsersWithAIEnabled, 24000);
 
 app.get('/', (req, res) => {
   res.send({ hello: 'world' });
