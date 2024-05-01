@@ -254,8 +254,6 @@ CzujnikRuchu.watch((err, value) => {
     console.error('There was an error', err); // Wy�wietl komunikat o b��dzie w konsoli
     return;
   }
-
-  // console.log("Stan czujnika: " + value); // Logowanie stanu czujnika
   elem.findOne({ gpio:579 }).then((element) => {
     if(element && element.automation){
       if (value === 1) {
@@ -265,7 +263,7 @@ CzujnikRuchu.watch((err, value) => {
         }
 
         // Uruchom proces kamery, je�li nie jest ju� uruchomiony
-        if (cameraProcess === null) {
+        if (cameraProcess !== null) {
           console.log(cameraProcess)
           cameraProcess = spawn('./server/.venv/bin/python3', ['server/camera_stream.py']);
 
