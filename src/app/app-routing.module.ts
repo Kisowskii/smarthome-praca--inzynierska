@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StartingPageComponent } from './starting-page/starting-page.component';
-import {RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
 import { MainMenuPageComponent } from './main-menu-page/main-menu-page.component';
 import { AirConditioningComponent } from './categoryElements/air-conditioning/air-conditioning.component';
@@ -19,6 +19,7 @@ import { BedroomComponent } from './categoryElements/bedroom/bedroom.component';
 import { OutsideComponent } from './categoryElements/outside/outside.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ChartsDialogComponent } from './main-menu-page/modals/chart-dialog.component';
+import { LockComponent } from './categoryElements/lock/lock.component';
 
 const appRoutes: Routes = [
   { path: '', component: StartingPageComponent },
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
   { path: 'menu/wilgotnosc', component: HumidityComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/monitoring', component: MonitoringComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/rolety', component: ShuttersComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
+  { path: 'menu/zamek', component: LockComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/zadymienie', component: SmokeComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/temperatura', component: TemperatureComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/kuchnia', component: KitchenComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
@@ -39,7 +41,7 @@ const appRoutes: Routes = [
   { path: 'menu/lazienka', component: BathroomComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/sypialnia', component: BedroomComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'menu/elementy-zewnetnrze', component: OutsideComponent, canLoad: [AuthGuard], canActivate: [AuthGuard] },
-]
+];
 
 @NgModule({
   imports: [

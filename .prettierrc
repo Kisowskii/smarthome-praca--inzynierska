@@ -1,0 +1,18 @@
+{
+  "overrides": [
+    {
+      "files": "*.ts",
+      "options": {
+        "printWidth": 300, 
+        "htmlWhitespaceSensitivity": "ignore"
+      }
+    },
+    {
+      "files": "*.component.ts",
+      "options": {
+        "printWidth": 300, 
+        "htmlWhitespaceSensitivity": "ignore"
+      }
+    }
+  ]
+}

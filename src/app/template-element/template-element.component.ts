@@ -10,45 +10,43 @@ import { VideoModalComponent } from '../categoryElements/monitoring/modal/camera
     <div class="template-container">
       <div class="top-panel dark-background">
         <div class="first-row">
-          <button  alt="Powrót do menu głównego" class="arrow-button dark-background" role="button" routerLink="..">
-            <img class='arrow' aria-label="Strzałka wstecz" src="../../assets/Strzalka-wstecz.svg">
+          <button alt="Powrót do menu głównego" class="arrow-button dark-background" role="button" routerLink="..">
+            <img class="arrow" aria-label="Strzałka wstecz" src="../../assets/Strzalka-wstecz.svg" />
           </button>
           <div class="title">{{ title }}</div>
         </div>
         <div class="second-row dark-background" *ngIf="showOptionAutomaticElement" [ariaLabel]="">
-          <mat-slide-toggle color="primary"  
-                            [checked]="automationChecked"
-                            (change)="onChangeSwitcherInformations()"
-                            [aria-label]="typeOfSwitherInformations"> 
-          </mat-slide-toggle>{{ typeOfSwitherInformations }}
+          <mat-slide-toggle color="primary" [checked]="automationChecked" (change)="onChangeSwitcherInformations()" [aria-label]="typeOfSwitherInformations"></mat-slide-toggle>
+          {{ typeOfSwitherInformations }}
         </div>
       </div>
       <div class="content-panel" *ngFor="let element of elements">
         <div class="information-panel">
           <div class="icon-container">
-            <img [src]="element.icon" *ngIf="type" alt="Ikona + {{element.elementPosition}}">
-            <img [src]="element.icon" *ngIf="position" alt="Ikona + {{element.buttonText}}">
-        </div> 
-          <div class="title-container" *ngIf="type">{{ element.elementPosition }}</div>
-          <div class="title-container" *ngIf="position">{{ element.buttonText }}</div>
-          <div class='monitoring ' role="button" *ngIf="element.elementType=='Monitoring' && element.value === true">
+            <img [src]="element.icon" *ngIf="type" alt="Ikona + {{ element.elementPosition }}" />
+            <img [src]="element.icon" *ngIf="position" alt="Ikona + {{ element.buttonText }}" />
+          </div>
+          <div class="title-container" *ngIf="type">
+            {{ element.elementPosition }}
+          </div>
+          <div class="title-container" *ngIf="position">
+            {{ element.buttonText }}
+          </div>
+          <div class="monitoring " role="button" *ngIf="element.elementType == 'Monitoring' && element.value === true">
             <button mat-raised-button color="primary" class="dark-fill-button" (click)="openCameraPreview()">Podgląd</button>
           </div>
-          <div class="value-container" *ngIf="onCheckValueIsStringOrNumer(element.value)">{{ element.value }}</div>
+          <div class="value-container" *ngIf="onCheckValueIsStringOrNumer(element.value)">
+            {{ element.value }}
+          </div>
           <div class="value-container" *ngIf="onCheckValueIsBoolean(element.value)">
-            <mat-slide-toggle [aria-label]="element.elementType + element.elementPosition"
-                              (click)="onUpdateElement(element)"
-                              color="primary"
-                              [checked]="element.value"
-                              [disabled]="automationChecked">
-            </mat-slide-toggle>
+            <mat-slide-toggle [aria-label]="element.elementType + element.elementPosition" (click)="onUpdateElement(element)" color="primary" [checked]="element.value" [disabled]="automationChecked"></mat-slide-toggle>
           </div>
         </div>
-        <hr>
+        <hr />
       </div>
     </div>
   `,
-  styleUrls: ['./template-element.component.scss']
+  styleUrls: ['./template-element.component.scss'],
 })
 export class TemplateElementComponent implements OnInit, OnDestroy {
   @Input() title: string = '';
@@ -100,17 +98,17 @@ export class TemplateElementComponent implements OnInit, OnDestroy {
     this.elementService.updateElement(element._id, element.buttonText, element.elementType, element.elementPosition, element.icon, element.value, element.automation);
   }
 
-   openCameraPreview(): void {
+  openCameraPreview(): void {
     this.dialog.open(VideoModalComponent, {
       width: '100%',
       height: '100%',
       maxWidth: '100%',
       autoFocus: true,
       data: {},
-      ariaLabel:'Okno modalne do podglądu kamery'
+      ariaLabel: 'Okno modalne do podglądu kamery',
     });
     const appRoot = this.el.nativeElement.closest('app-root');
-    
+
     if (appRoot) {
       this.renderer.removeAttribute(appRoot, 'aria-hidden');
       this.renderer.removeAttribute(appRoot, 'tabindex');

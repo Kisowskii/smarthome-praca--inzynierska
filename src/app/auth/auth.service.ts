@@ -47,47 +47,43 @@ export class AuthService {
       login: login,
       password: password,
     };
-  
-    this.http
-      .post<{ token: string; id: string }>(
-        'http://192.168.0.16:3000/api/login',
-        user
-      )
-      .subscribe((response) => {
-        const token = response.token;
-        const id = response.id;
-        this.token = token;
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('userId', id);
-        const now = new Date();
-        const expirationDate = new Date(now.getTime() + 1800000); // 30 minut
-        localStorage.setItem('expiration', expirationDate.toISOString());
-        if (token) {
-          this.isAuthenticated = true;
-          this.authStatusListener.next(true);
-          this.router.navigate(['/menu']);
-          this.setAuthTimer(1800000); // Ustawienie timera na 30 minut
-        }
-      });
-  }
 
-    autoAuthUser() {
-      const authToken = localStorage.getItem('authToken');
-      const expirationDate = localStorage.getItem('expiration');
-      if (!authToken || !expirationDate) {
-        return;
-      }
+    this.http.post<{ token: string; id: string; role: string }>('http://192.168.1.103:3000/api/login', user).subscribe((response) => {
+      const { token, id, role } = response;
+      this.token = token;
+      this.user = role; // Store the role in the AuthService
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('userId', id);
+      localStorage.setItem('userRole', role); // Save role to local storage
       const now = new Date();
-      const expiresIn = new Date(expirationDate).getTime() - now.getTime();
-      if (expiresIn > 0) {
-        this.token = authToken;
+      const expirationDate = new Date(now.getTime() + 1800000); // 30 minutes
+      localStorage.setItem('expiration', expirationDate.toISOString());
+      if (token) {
         this.isAuthenticated = true;
         this.authStatusListener.next(true);
-        this.setAuthTimer(expiresIn);
-      } else {
-        this.logout(); // Wyloguj, jeśli token wygasł
+        this.router.navigate(['/menu']);
+        this.setAuthTimer(1800000); // Set timer for 30 minutes
       }
+    });
+  }
+
+  autoAuthUser() {
+    const authToken = localStorage.getItem('authToken');
+    const expirationDate = localStorage.getItem('expiration');
+    if (!authToken || !expirationDate) {
+      return;
     }
+    const now = new Date();
+    const expiresIn = new Date(expirationDate).getTime() - now.getTime();
+    if (expiresIn > 0) {
+      this.token = authToken;
+      this.isAuthenticated = true;
+      this.authStatusListener.next(true);
+      this.setAuthTimer(expiresIn);
+    } else {
+      this.logout(); // Wyloguj, jeśli token wygasł
+    }
+  }
 
   logout() {
     this.token = null;
@@ -101,13 +97,13 @@ export class AuthService {
   }
 
   createUser(login: string, password: string, role: string): Observable<any> {
-  const user = { login, password, role };
-  return this.http.post<{ message: string }>('http://192.168.0.16:3000/api/users/add', user);
-}
-
-private setAuthTimer(duration: number) {
-  setTimeout(() => {
-    this.logout();
-  }, duration);
-}
+    const user = { login, password, role };
+    return this.http.post<{ message: string }>('http://192.168.0.16:3000/api/ng ', user);
   }
+
+  private setAuthTimer(duration: number) {
+    setTimeout(() => {
+      this.logout();
+    }, duration);
+  }
+}
