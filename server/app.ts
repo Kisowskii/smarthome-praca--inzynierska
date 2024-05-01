@@ -252,8 +252,8 @@ CzujnikRuchu.watch((err, value) => {
   }
 
   // console.log("Stan czujnika: " + value); // Logowanie stanu czujnika
-  elem.findOne({ gpio: 579 }).then((element) => {
-    if (element.automation) {
+  elem.findOne({ gpio:579 }).then((element) => {
+    if(element && element.automation){
       if (value === 1) {
         if (cameraTimeout) {
           // Je�li timer ju� istnieje, zresetuj go
